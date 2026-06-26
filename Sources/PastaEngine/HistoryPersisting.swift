@@ -22,6 +22,9 @@ public final class EncryptedJSONPersistence: HistoryPersisting {
     private let queue = DispatchQueue(label: "com.pasta.persistence")
     private let debounceInterval: TimeInterval
     private var pending: DispatchWorkItem?
+    /// Latest items awaiting a write; the source of truth for both the debounced write
+    /// and `flush()` (so we never rely on `perform()`-ing a cancelled work item).
+    private var pendingItems: [ClipItem]?
 
     public init(
         fileURL: URL? = nil,
@@ -53,20 +56,30 @@ public final class EncryptedJSONPersistence: HistoryPersisting {
     }
 
     public func save(_ items: [ClipItem]) {
-        pending?.cancel()
-        let work = DispatchWorkItem { [weak self] in self?.write(items) }
-        pending = work
-        queue.asyncAfter(deadline: .now() + debounceInterval, execute: work)
+        queue.async { [weak self] in
+            guard let self else { return }
+            self.pendingItems = items
+            self.pending?.cancel()
+            let work = DispatchWorkItem { [weak self] in self?.writePending() }
+            self.pending = work
+            self.queue.asyncAfter(deadline: .now() + self.debounceInterval, execute: work)
+        }
     }
 
     public func flush() {
         queue.sync {
-            if let work = pending {
-                work.cancel()
-                pending = nil
-                work.perform()
-            }
+            pending?.cancel()
+            pending = nil
+            writePending()
         }
+    }
+
+    /// Must run on `queue`. Writes the latest pending items (if any), then clears them so a
+    /// stale debounced work item becomes a no-op.
+    private func writePending() {
+        guard let items = pendingItems else { return }
+        pendingItems = nil
+        write(items)
     }
 
     private func write(_ items: [ClipItem]) {
