@@ -11,14 +11,14 @@ public final class Preferences: ObservableObject {
     public static let defaultAccentKey = "latch"
 
     private enum Key {
-        static let cap = "pasta.historyCap"
-        static let interval = "pasta.pollInterval"
-        static let soundOnCopy = "pasta.soundOnCopy"
-        static let showCount = "pasta.showCountInMenuBar"
-        static let ignorePasswords = "pasta.ignorePasswords"
-        static let clearOnLock = "pasta.clearOnLock"
-        static let incognito = "pasta.incognito"
-        static let accentKey = "pasta.accentKey"
+        static let cap = "latch.historyCap"
+        static let interval = "latch.pollInterval"
+        static let soundOnCopy = "latch.soundOnCopy"
+        static let showCount = "latch.showCountInMenuBar"
+        static let ignorePasswords = "latch.ignorePasswords"
+        static let clearOnLock = "latch.clearOnLock"
+        static let incognito = "latch.incognito"
+        static let accentKey = "latch.accentKey"
     }
 
     /// Explicit publisher — all settings are computed (no `@Published` members).

@@ -1,6 +1,6 @@
 import AppKit
 import SwiftUI
-import PastaEngine
+import LatchEngine
 
 /// Hosts the settings view in a single titled window. See specs/09-preferences.
 final class SettingsWindowController {
@@ -24,7 +24,7 @@ final class SettingsWindowController {
         let view = SettingsView(prefs: prefs, loginItem: loginItem, onClearAll: onClearAll)
         let hosting = NSHostingController(rootView: view)
         let w = NSWindow(contentViewController: hosting)
-        w.title = "pasta Settings"
+        w.title = "Latch Settings"
         w.styleMask = [.titled, .closable, .miniaturizable]
         w.isReleasedWhenClosed = false
         w.center()

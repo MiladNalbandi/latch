@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 import Combine
-import PastaEngine
+import LatchEngine
 
 /// SwiftUI root that owns search focus and forwards it to the panel.
 private struct PanelRoot: View {

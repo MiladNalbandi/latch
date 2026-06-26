@@ -1,5 +1,5 @@
 import XCTest
-@testable import PastaEngine
+@testable import LatchEngine
 
 final class ClipboardMonitorTests: XCTestCase {
     private func makeMonitor(_ pb: FakePasteboard, source: String? = nil, filter: PrivacyFilter = PrivacyFilter())

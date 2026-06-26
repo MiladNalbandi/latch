@@ -14,12 +14,12 @@ public extension HistoryPersisting {
 }
 
 /// Encrypts the `[ClipItem]` array with AES-GCM (via `CryptoBox`) and writes it atomically
-/// to `~/Library/Application Support/pasta/history.dat`. Saves are debounced.
+/// to `~/Library/Application Support/Latch/history.dat`. Saves are debounced.
 public final class EncryptedJSONPersistence: HistoryPersisting {
     private let fileURL: URL
     private let fileManager: FileManager
     private let crypto: CryptoBox
-    private let queue = DispatchQueue(label: "com.pasta.persistence")
+    private let queue = DispatchQueue(label: "com.latch.persistence")
     private let debounceInterval: TimeInterval
     private var pending: DispatchWorkItem?
     /// Latest items awaiting a write; the source of truth for both the debounced write
@@ -42,7 +42,7 @@ public final class EncryptedJSONPersistence: HistoryPersisting {
         let base = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fileManager.temporaryDirectory
         return base
-            .appendingPathComponent("pasta", isDirectory: true)
+            .appendingPathComponent("Latch", isDirectory: true)
             .appendingPathComponent("history.dat", isDirectory: false)
     }
 

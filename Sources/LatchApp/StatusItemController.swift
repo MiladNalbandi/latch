@@ -42,14 +42,14 @@ final class StatusItemController: NSObject, NSMenuDelegate {
 
     private func buildMenu() {
         let menu = NSMenu()
-        menu.addItem(item("Show pasta", #selector(showTapped), key: ""))
+        menu.addItem(item("Show Latch", #selector(showTapped), key: ""))
         pauseItem.target = self
         pauseItem.action = #selector(pauseTapped)
         menu.addItem(pauseItem)
         menu.addItem(.separator())
         menu.addItem(item("Preferences…", #selector(prefsTapped), key: ","))
         menu.addItem(.separator())
-        menu.addItem(item("Quit pasta", #selector(quitTapped), key: "q"))
+        menu.addItem(item("Quit Latch", #selector(quitTapped), key: "q"))
         statusItem.menu = menu
     }
 
@@ -62,7 +62,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     private func refreshButton() {
         guard let button = statusItem.button else { return }
         let symbol = incognito ? "eye.slash" : "doc.on.clipboard"
-        button.image = NSImage(systemSymbolName: symbol, accessibilityDescription: "pasta")
+        button.image = NSImage(systemSymbolName: symbol, accessibilityDescription: "Latch")
         button.imagePosition = .imageLeading
         button.title = (showCount && !incognito && count > 0) ? " \(count)" : ""
     }

@@ -1,6 +1,6 @@
 import AppKit
 import Combine
-import PastaEngine
+import LatchEngine
 
 /// Composition root: constructs and wires the engine + UI, owns lifecycle. See specs/06.
 final class AppDelegate: NSObject, NSApplicationDelegate {

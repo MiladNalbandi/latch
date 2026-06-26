@@ -2,13 +2,13 @@
 
 ## Overview
 
-Let pasta start automatically when the user logs in, toggled from Preferences, using the
+Let Latch start automatically when the user logs in, toggled from Preferences, using the
 modern `SMAppService` API (macOS 13+). A clipboard manager is only useful if it's always
 running, so launch-at-login is a core MVP convenience.
 
 ## User stories
 
-- **US-1.** As a user, I want pasta to start automatically at login so my history is always
+- **US-1.** As a user, I want Latch to start automatically at login so my history is always
   being captured.
 - **US-2.** As a user, I want to turn that off easily if I prefer to launch it manually.
 - **US-3.** As a user, I want the toggle to reflect the real current state.

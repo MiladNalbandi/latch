@@ -15,7 +15,7 @@
 - [ ] **T-03.8** Implement debounced `scheduleSave()` invoked on every mutation.
   _(03-AC-8)_
 
-## Tests (PastaEngineTests / HistoryStoreTests, using an in-memory FakePersistence)
+## Tests (LatchEngineTests / HistoryStoreTests, using an in-memory FakePersistence)
 
 - [ ] **TT-03.a** Add three distinct items → order is newest-first. _(03-AC-1, 03-AC-3)_
 - [ ] **TT-03.b** Add an item, then add another with the same `contentHash` → count stays

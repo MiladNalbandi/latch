@@ -1,4 +1,4 @@
-# SwiftLint configuration for pasta.
+# SwiftLint configuration for Latch.
 # Run locally: `make lint` (requires `brew install swiftlint`).
 
 included:

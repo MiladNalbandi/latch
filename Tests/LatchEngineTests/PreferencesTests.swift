@@ -1,9 +1,9 @@
 import XCTest
-@testable import PastaEngine
+@testable import LatchEngine
 
 final class PreferencesTests: XCTestCase {
     private func makeDefaults() -> UserDefaults {
-        let suite = "pasta.tests." + UUID().uuidString
+        let suite = "latch.tests." + UUID().uuidString
         return UserDefaults(suiteName: suite)!
     }
 

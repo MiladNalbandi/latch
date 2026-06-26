@@ -4,11 +4,11 @@
 
 Translate the Latch design system (`/design`) into a centralized SwiftUI layer — tokens
 (color, type, spacing, radii, shadows, motion, materials) and reusable components — so every
-pasta view renders the brand consistently instead of hard-coding values.
+Latch view renders the brand consistently instead of hard-coding values.
 
 ## User stories
 
-- **US-1.** As a user, I want pasta to look like one cohesive, polished native-Mac app.
+- **US-1.** As a user, I want Latch to look like one cohesive, polished native-Mac app.
 - **US-2.** As a developer, I want a single source of truth for colors/spacing/components so
   the UI stays consistent and is fast to build.
 

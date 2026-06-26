@@ -1,5 +1,5 @@
 import SwiftUI
-import PastaEngine
+import LatchEngine
 
 /// The frosted two-pane history panel. See specs/08-history-window and
 /// design/ui_kits/app/LatchPanel.jsx.

@@ -13,5 +13,5 @@
 - [ ] Press ⌘⇧V again → the window hides. _(07-AC-3)_
 - [ ] Change the shortcut in Preferences (feature 09), relaunch the app → the new shortcut
   still works (persistence). _(07-AC-4)_
-- [ ] Clear the shortcut → status-menu "Show pasta" still opens the window. _(graceful
+- [ ] Clear the shortcut → status-menu "Show Latch" still opens the window. _(graceful
   degradation)_

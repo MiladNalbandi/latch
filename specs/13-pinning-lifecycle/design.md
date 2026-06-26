@@ -3,10 +3,10 @@
 ## Files / touch points
 
 ```
-Sources/PastaEngine/HistoryStore.swift   # pin/unpin, pinned-aware ordering + eviction
-Sources/PastaEngine/ClipboardMonitor.swift # isPaused (incognito)
-Sources/PastaApp/LockMonitor.swift        # screen-lock observer
-Sources/PastaApp/AppDelegate.swift        # wiring
+Sources/LatchEngine/HistoryStore.swift   # pin/unpin, pinned-aware ordering + eviction
+Sources/LatchEngine/ClipboardMonitor.swift # isPaused (incognito)
+Sources/LatchApp/LockMonitor.swift        # screen-lock observer
+Sources/LatchApp/AppDelegate.swift        # wiring
 ```
 
 ## Pinning (HistoryStore)

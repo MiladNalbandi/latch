@@ -3,15 +3,15 @@
 ## Files
 
 ```
-Sources/PastaApp/AppDelegate.swift
-Sources/PastaApp/StatusItemController.swift
+Sources/LatchApp/AppDelegate.swift
+Sources/LatchApp/StatusItemController.swift
 ```
 
 ## AppDelegate (composition root)
 
 ```swift
 import AppKit
-import PastaEngine
+import LatchEngine
 
 @main
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -74,13 +74,13 @@ final class StatusItemController {
          onQuit: @escaping () -> Void) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem.button?.image = NSImage(systemSymbolName: "doc.on.clipboard",
-                                           accessibilityDescription: "pasta")   // 06-AC-1
+                                           accessibilityDescription: "Latch")   // 06-AC-1
         let menu = NSMenu()
-        menu.addItem(withTitle: "Show pasta", action: ..., keyEquivalent: "")   // 06-AC-2/3
+        menu.addItem(withTitle: "Show Latch", action: ..., keyEquivalent: "")   // 06-AC-2/3
         menu.addItem(.separator())
         menu.addItem(withTitle: "Preferences…", action: ..., keyEquivalent: ",")// 06-AC-2/4
         menu.addItem(.separator())
-        menu.addItem(withTitle: "Quit pasta", action: ..., keyEquivalent: "q")  // 06-AC-2/5
+        menu.addItem(withTitle: "Quit Latch", action: ..., keyEquivalent: "q")  // 06-AC-2/5
         statusItem.menu = menu
     }
 }
@@ -91,7 +91,7 @@ the controller that call the stored closures).
 
 ## Edge cases
 
-- If the status button image fails to load (older system), fall back to a title "pasta".
+- If the status button image fails to load (older system), fall back to a title "Latch".
 - Quit flushes persistence first (06-AC-5 / 06-AC-8) so no recent captures are lost.
 - `.accessory` policy means the app has no main menu; all interaction is via the status
   menu, the hotkey, and the windows.

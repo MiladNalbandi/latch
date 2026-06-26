@@ -1,6 +1,6 @@
-# pasta — Specifications (v0.1)
+# Latch — Specifications (v0.1)
 
-`pasta` is a macOS menu-bar clipboard-history manager. The product is **named "pasta"**
+`Latch` is a macOS menu-bar clipboard-history manager. The product is **named "Latch"**
 but adopts the **"Latch" design system** (`/design`) as its visual + UX identity: a warm,
 private, Spotlight-style clipboard. This directory holds the **spec-driven development**
 artifacts. Every feature has its own folder with three files:
@@ -43,7 +43,7 @@ double as the manual-QA / unit-test checklist that runs on a Mac.
 - **Cap** — `historyCap`, the maximum number of stored items (default 200).
 - **Concealed / transient types** — `NSPasteboard` type hints used by password managers
   and other tools to mark content that should not be recorded.
-- **Engine** — the `PastaEngine` target: platform-light, testable core logic.
+- **Engine** — the `LatchEngine` target: platform-light, testable core logic.
 - **Agent app** — an app with `LSUIElement = true` / activation policy `.accessory`:
   runs without a Dock icon or main menu bar, only a status-bar presence.
 
@@ -52,7 +52,7 @@ double as the manual-QA / unit-test checklist that runs on a Mac.
 Two targets with a strict, one-way dependency:
 
 ```
-PastaApp (AppKit + SwiftUI UI)  ──depends on──▶  PastaEngine (core logic)
+LatchApp (AppKit + SwiftUI UI)  ──depends on──▶  LatchEngine (core logic)
 ```
 
 - The engine **never** imports the UI layer.
@@ -61,17 +61,17 @@ PastaApp (AppKit + SwiftUI UI)  ──depends on──▶  PastaEngine (core log
   and persistence logic can be unit-tested against fakes.
 
 ```
-Sources/PastaEngine/   ClipItem, ClipType, PasteboardReading, SystemPasteboard,
+Sources/LatchEngine/   ClipItem, ClipType, PasteboardReading, SystemPasteboard,
                        SourceProvider, ClipClassifier, PrivacyFilter, ClipboardMonitor,
                        HistoryPersisting (+ EncryptedJSONPersistence), CryptoBox,
                        HistoryStore, FuzzyMatcher, Preferences
-Sources/PastaApp/      AppDelegate, StatusItemController, HotkeyManager, LoginItemManager,
+Sources/LatchApp/      AppDelegate, StatusItemController, HotkeyManager, LoginItemManager,
                        LockMonitor, HistoryPanelController, HistoryViewModel, HistoryPanel,
                        ClipRow, PreviewPane, FilterBar, SettingsWindowController,
                        SettingsView, DesignSystem/* (Palette, Typography, Metrics,
                        PBadge, PKbd, PButton, PIconButton, PSearchField, PSwitch, PCard),
-                       Resources/pasta.entitlements
-Tests/PastaEngineTests/  ClassifierTests, PrivacyFilterTests, FuzzyMatcherTests,
+                       Resources/Latch.entitlements
+Tests/LatchEngineTests/  ClassifierTests, PrivacyFilterTests, FuzzyMatcherTests,
                          HistoryStoreTests, CryptoBoxTests, PersistenceTests,
                          ClipboardMonitorTests
 ```
@@ -84,7 +84,7 @@ Tests/PastaEngineTests/  ClassifierTests, PrivacyFilterTests, FuzzyMatcherTests,
   iCloud sync is explicitly out of scope for v0.1 (Settings shows it disabled / "Coming
   soon").
 - **NFR-3 Persistence.** History survives app quit/relaunch and machine restart, stored
-  locally **encrypted** at `~/Library/Application Support/pasta/history.dat` (AES-GCM; key
+  locally **encrypted** at `~/Library/Application Support/Latch/history.dat` (AES-GCM; key
   in the login Keychain — see feature 04).
 - **NFR-9 Design fidelity.** The UI matches the Latch design system in `/design` (warm
   paper canvas, Latch green `#12A877`, frosted-glass floating panel, soft radii, keycap
@@ -119,8 +119,8 @@ reference it.
 
 ```
 brew install xcodegen     # one-time
-make gen                  # xcodegen generate -> pasta.xcodeproj (gitignored)
-make build                # xcodebuild -scheme PastaApp build
+make gen                  # xcodegen generate -> Latch.xcodeproj (gitignored)
+make build                # xcodebuild -scheme LatchApp build
 make test                 # engine unit tests
 make run                  # launch the .app
 ```

@@ -6,11 +6,11 @@
 ## Files (v0.1 Latch)
 
 ```
-Sources/PastaApp/HistoryPanelController.swift   # frosted NSPanel host + show/hide/toggle
-Sources/PastaApp/HistoryViewModel.swift         # query + filter chip + selection + actions
-Sources/PastaApp/HistoryPanel.swift             # SwiftUI: header + FilterBar + list + PreviewPane + footer
-Sources/PastaApp/FilterBar.swift                # chip row
-Sources/PastaApp/PreviewPane.swift              # right-hand preview + actions
+Sources/LatchApp/HistoryPanelController.swift   # frosted NSPanel host + show/hide/toggle
+Sources/LatchApp/HistoryViewModel.swift         # query + filter chip + selection + actions
+Sources/LatchApp/HistoryPanel.swift             # SwiftUI: header + FilterBar + list + PreviewPane + footer
+Sources/LatchApp/FilterBar.swift                # chip row
+Sources/LatchApp/PreviewPane.swift              # right-hand preview + actions
 // ClipRow lives in DesignSystem (feature 11)
 ```
 

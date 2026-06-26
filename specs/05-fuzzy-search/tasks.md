@@ -8,7 +8,7 @@
 - [ ] **T-05.3** Lowercase both query and candidate for case-insensitive matching.
   _(05-AC-5)_
 
-## Tests (PastaEngineTests / FuzzyMatcherTests)
+## Tests (LatchEngineTests / FuzzyMatcherTests)
 
 - [ ] **TT-05.a** Empty query → `filter` returns the input array unchanged. _(05-AC-1)_
 - [ ] **TT-05.b** Subsequence match: `score("ace", "abcde")` is non-nil; `score("aec",

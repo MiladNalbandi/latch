@@ -10,7 +10,7 @@
   clear-on-lock (Preferences → LockMonitor → store.clear) in `AppDelegate`. _(13-AC-4,
   13-AC-5)_
 
-## Tests (PastaEngineTests / HistoryStoreTests + ClipboardMonitorTests)
+## Tests (LatchEngineTests / HistoryStoreTests + ClipboardMonitorTests)
 
 - [ ] **TT-13.a** Pin an old item; add many new → pinned stays at top and is not evicted.
   _(13-AC-2, 13-AC-3)_

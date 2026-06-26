@@ -3,7 +3,7 @@
 ## Files
 
 ```
-Sources/PastaEngine/HistoryStore.swift
+Sources/LatchEngine/HistoryStore.swift
 ```
 
 (Depends on `HistoryPersisting` from feature 04 and `ClipItem` from feature 01.)

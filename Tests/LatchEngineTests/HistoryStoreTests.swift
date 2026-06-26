@@ -1,5 +1,5 @@
 import XCTest
-@testable import PastaEngine
+@testable import LatchEngine
 
 @MainActor
 final class HistoryStoreTests: XCTestCase {

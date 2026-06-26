@@ -25,7 +25,7 @@ Keychain**. The encrypted blob is written to `history.dat` (replacing plaintext
 wraps the same load/save/atomic-write contract.
 
 - **04-AC-10.** THE SYSTEM SHALL generate a 256-bit key on first run and store it in the
-  Keychain (`kSecClassGenericPassword`, service `com.pasta.history-key`,
+  Keychain (`kSecClassGenericPassword`, service `com.latch.history-key`,
   `kSecAttrAccessibleAfterFirstUnlock`); subsequent runs reuse it.
 - **04-AC-11.** THE SYSTEM SHALL encrypt with AES-GCM before writing and decrypt after
   reading; the on-disk file SHALL NOT contain plaintext clipboard content.
@@ -35,7 +35,7 @@ wraps the same load/save/atomic-write contract.
 ## Acceptance criteria (EARS)
 
 - **04-AC-1.** THE SYSTEM SHALL persist history (encrypted) at
-  `~/Library/Application Support/pasta/history.dat`.
+  `~/Library/Application Support/Latch/history.dat`.
 - **04-AC-2.** WHEN saving, THE SYSTEM SHALL write atomically (write to a temp file then
   replace) so a crash mid-write cannot corrupt existing history.
 - **04-AC-3.** WHEN the app launches, THE SYSTEM SHALL load the persisted history if the
@@ -44,7 +44,7 @@ wraps the same load/save/atomic-write contract.
   history (no error shown).
 - **04-AC-5.** IF the history file is unreadable or corrupt (decode failure), THEN THE
   SYSTEM SHALL start with an empty history and SHALL NOT crash.
-- **04-AC-6.** WHEN the Application Support `pasta` directory does not exist, THE SYSTEM
+- **04-AC-6.** WHEN the Application Support `Latch` directory does not exist, THE SYSTEM
   SHALL create it before writing.
 - **04-AC-7.** THE SYSTEM SHALL define a `HistoryPersisting` protocol
   (`load() -> [ClipItem]`, `save(_:)`) so an in-memory fake can substitute in tests.

@@ -1,5 +1,5 @@
 import SwiftUI
-import PastaEngine
+import LatchEngine
 
 /// Relative timestamp ("just now", "4m ago", "Yesterday"). Shared by row + preview.
 enum RelativeTime {

@@ -1,6 +1,6 @@
-# Contributing to pasta
+# Contributing to Latch
 
-Thanks for working on pasta. This guide covers the local setup, the quality gates, and the
+Thanks for working on Latch. This guide covers the local setup, the quality gates, and the
 conventions we follow. Read [`ARCHITECTURE.md`](ARCHITECTURE.md) first for the big picture.
 
 ## Prerequisites (macOS)
@@ -11,7 +11,7 @@ conventions we follow. Read [`ARCHITECTURE.md`](ARCHITECTURE.md) first for the b
 ## Everyday commands
 
 ```sh
-make gen           # generate pasta.xcodeproj from project.yml (gitignored)
+make gen           # generate Latch.xcodeproj from project.yml (gitignored)
 make build         # build the app
 make test          # run engine unit tests
 make run           # build + launch the app
@@ -30,7 +30,7 @@ the first `make gen` on your Mac, commit the resolved
 
 CI (`.github/workflows/ci.yml`) must be green:
 
-- **build-test** — builds `PastaApp` and runs `PastaEngineTests` on `macos-15`. This is the
+- **build-test** — builds `LatchApp` and runs `LatchEngineTests` on `macos-15`. This is the
   blocking gate.
 - **lint** — SwiftFormat (`--lint`) + SwiftLint. Blocking. Run `make format` + `make lint`
   locally before pushing.
@@ -41,8 +41,8 @@ Run `make check` locally before pushing to catch all of the above.
 
 These mirror the rules in [`ARCHITECTURE.md`](ARCHITECTURE.md):
 
-- **Respect the layering.** `PastaEngine` must not import or reference `PastaApp`. Put
-  testable logic in the engine; keep `PastaApp` to presentation + OS glue.
+- **Respect the layering.** `LatchEngine` must not import or reference `LatchApp`. Put
+  testable logic in the engine; keep `LatchApp` to presentation + OS glue.
 - **Hide OS APIs behind protocols.** Any new `NSPasteboard`/`NSWorkspace`/Keychain/etc.
   touchpoint gets a protocol in the engine and a single adapter, so it can be faked in tests.
 - **Inject dependencies.** Construct concrete types only in `AppDelegate`; pass them via
@@ -54,13 +54,13 @@ These mirror the rules in [`ARCHITECTURE.md`](ARCHITECTURE.md):
 - **Privacy is non-negotiable.** No network/analytics. Filter concealed/transient types
   before reading content. Keep history encrypted at rest.
 - **Tests with logic.** New engine behavior ships with hermetic tests (no real Keychain/
-  filesystem/pasteboard) in `Tests/PastaEngineTests`.
+  filesystem/pasteboard) in `Tests/LatchEngineTests`.
 - **Style.** SwiftFormat + SwiftLint own formatting and lint; don't fight them. 4-space
   indent, 120-col soft wrap.
 
 ## Specs-first workflow
 
-pasta is developed spec-first. For a non-trivial feature, add or update its folder under
+Latch is developed spec-first. For a non-trivial feature, add or update its folder under
 `specs/<NN-feature>/` (`requirements.md` EARS criteria → `design.md` → `tasks.md`) before
 implementing, and tag tasks to the acceptance-criteria IDs they satisfy.
 

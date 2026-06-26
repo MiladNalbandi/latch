@@ -6,7 +6,7 @@
 - [ ] **T-12.3** Implement helpers: `isHexColor`, `isRGBColor`, `isSingleURL`,
   `looksLikeCode` (+ `devApps`). _(12-AC-4, 12-AC-5, 12-AC-6)_
 
-## Tests (PastaEngineTests / ClassifierTests)
+## Tests (LatchEngineTests / ClassifierTests)
 
 - [ ] **TT-12.a** `#12A877` and `#abc` → `.color`; `rgb(1,2,3)` → `.color`. _(12-AC-4)_
 - [ ] **TT-12.b** `https://x.com/y` and `mailto:a@b.com` → `.link`; `hello world` → not

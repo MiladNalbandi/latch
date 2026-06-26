@@ -1,5 +1,5 @@
 import XCTest
-@testable import PastaEngine
+@testable import LatchEngine
 
 final class FuzzyMatcherTests: XCTestCase {
     let m = FuzzyMatcher()

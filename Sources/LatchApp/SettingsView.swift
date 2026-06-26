@@ -1,6 +1,6 @@
 import SwiftUI
 import KeyboardShortcuts
-import PastaEngine
+import LatchEngine
 
 /// Tabbed settings (General / Privacy / Sync-disabled). See specs/09-preferences and
 /// design/ui_kits/app/LatchSettings.jsx.
@@ -87,7 +87,7 @@ struct SettingsView: View {
                 }
             }
             section("Startup") {
-                toggleRow("Launch pasta at login", "Keep your history a keystroke away.", $launchAtLogin) { on in
+                toggleRow("Launch Latch at login", "Keep your history a keystroke away.", $launchAtLogin) { on in
                     _ = loginItem.setEnabled(on)
                     launchAtLogin = loginItem.isEnabled
                 }
@@ -98,7 +98,7 @@ struct SettingsView: View {
                 row("Open clipboard history", "The one you'll use a hundred times a day.") {
                     KeyboardShortcuts.Recorder(for: .toggleWindow)
                 }
-                row("Quick-paste recent", "Copy the last clip without opening pasta.") {
+                row("Quick-paste recent", "Copy the last clip without opening Latch.") {
                     KeyboardShortcuts.Recorder(for: .quickPaste)
                 }
             }
@@ -121,7 +121,7 @@ struct SettingsView: View {
             .background(Palette.secureTint.opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: Radius.card, style: .continuous))
 
-            section("What pasta captures") {
+            section("What Latch captures") {
                 toggleRow("Ignore passwords", "Skip anything copied from a password manager.", bind(\.ignorePasswords))
                 toggleRow("Clear history when Mac locks", nil, bind(\.clearOnLock))
                 toggleRow("Pause capture (incognito)", "Temporarily stop recording new copies.", bind(\.incognito))
