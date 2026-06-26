@@ -15,10 +15,13 @@ final class PersistenceTests: XCTestCase {
         try? FileManager.default.removeItem(at: tmpDir)
     }
 
+    /// A shared in-memory key store so save+load within a test use the same key (CI-safe).
+    private let keyStore = InMemoryKeyStore()
+
     private func makePersistence() -> EncryptedJSONPersistence {
         EncryptedJSONPersistence(
             fileURL: fileURL,
-            crypto: CryptoBox(service: "com.pasta.test." + UUID().uuidString, account: "test"),
+            crypto: CryptoBox(keyStore: keyStore),
             debounceInterval: 0.05
         )
     }
