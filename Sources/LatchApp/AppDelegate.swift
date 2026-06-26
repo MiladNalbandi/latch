@@ -29,7 +29,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         pasteboard = SystemPasteboard()
         persistence = EncryptedJSONPersistence()
         store = HistoryStore(persistence: persistence, cap: prefs.historyCap)
-        store.load()
+        // Load history off the main thread: decryption reads the AES key from the Keychain,
+        // which can block (or prompt) — never let that freeze menu-bar/hotkey setup below.
+        store.loadAsync()
 
         monitor = ClipboardMonitor(
             pasteboard: pasteboard,

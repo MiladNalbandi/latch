@@ -22,6 +22,26 @@ public final class HistoryStore: ObservableObject {
         enforceCap()
     }
 
+    /// Load history off the main thread, then publish on the main thread. Decryption reads
+    /// the AES key from the Keychain, which can block (or prompt) on first/ re-signed runs;
+    /// doing it synchronously at launch would freeze the menu bar and hotkey setup. Any clips
+    /// captured while loading are preserved (deduped by content).
+    public func loadAsync() {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self else { return }
+            let loaded = self.persistence.load()
+            DispatchQueue.main.async {
+                let capturedMeanwhile = self.items
+                self.items = loaded
+                for clip in capturedMeanwhile where !self.items.contains(where: { $0.contentHash == clip.contentHash }) {
+                    self.items.append(clip)
+                }
+                self.sortItems()
+                self.enforceCap()
+            }
+        }
+    }
+
     // MARK: - Mutations
 
     public func add(_ item: ClipItem) {

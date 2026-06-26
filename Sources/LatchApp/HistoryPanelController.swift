@@ -40,7 +40,9 @@ final class HistoryPanelController {
         panel.backgroundColor = .clear
         panel.hasShadow = true
         panel.isOpaque = false
-        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .moveToActiveSpace]
+        // `.canJoinAllSpaces` and `.moveToActiveSpace` are mutually exclusive — setting both
+        // raises an NSException on modern macOS. Spotlight-style panel: appear on all spaces.
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
 
         vm.onCopySound = onCopySound
         vm.onActivate = { [weak self] in self?.hide() }
