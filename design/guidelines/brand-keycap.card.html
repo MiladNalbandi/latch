@@ -1,0 +1,33 @@
+<!-- @dsCard group="Brand" viewport="700x180" name="Keycap Motif" subtitle="Shortcuts as first-class brand objects" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-50); padding: 22px 24px; color: var(--ink-900); }
+  h4 { margin: 0 0 4px; font-size: 14px; }
+  p { margin: 0 0 16px; font-size: 13px; color: var(--text-muted); }
+  .keys { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+  kbd {
+    font-family: var(--font-mono); font-weight: 600; color: var(--ink-800);
+    background: var(--paper-0); border: 1px solid var(--line-strong); border-bottom-width: 2.5px;
+    border-radius: var(--radius-keycap); padding: 9px 13px; font-size: 16px; min-width: 18px; text-align: center;
+    box-shadow: var(--shadow-keycap);
+  }
+  kbd.go { background: var(--green-500); color: #fff; border-color: var(--green-700); }
+  .plus { color: var(--text-faint); font-size: 13px; }
+</style>
+</head>
+<body>
+  <h4>The shortcut is the product</h4>
+  <p>Keycaps use mono, a 2.5px bottom border for "depth", and the primary key gets Latch green.</p>
+  <div class="keys">
+    <kbd>⌘</kbd><span class="plus">+</span><kbd>⇧</kbd><span class="plus">+</span><kbd class="go">V</kbd>
+    <span style="width:24px"></span>
+    <kbd>⌘</kbd><span class="plus">+</span><kbd>⌃</kbd><span class="plus">+</span><kbd>Space</kbd>
+    <span style="width:24px"></span>
+    <kbd>⌥</kbd><span class="plus">+</span><kbd class="go">↩</kbd>
+  </div>
+</body>
+</html>

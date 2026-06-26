@@ -40,7 +40,14 @@ a password. Honoring it is the core privacy guarantee of the app (NFR-2).
 - **02-AC-5.** THE SYSTEM SHALL expose the filter as pure, side-effect-free logic
   (`shouldSkip(types:) -> Bool`) that is unit-testable without a pasteboard.
 
+## v0.1 (Latch) addendum
+
+- **02-AC-6.** The "Ignore passwords" Settings toggle (feature 09) SHALL enable/disable the
+  concealed-type skip; default ON. (Transient/auto-generated are always skipped.)
+- **02-AC-7.** Incognito pause (feature 13) is a separate, broader control that stops all
+  capture regardless of type.
+
 ## Out of scope
 
-- User-configurable allow/deny lists or per-app rules (post-MVP).
+- User-configurable allow/deny lists or per-app rules (post-v0.1).
 - Heuristic detection of secrets by content (we only honor explicit type hints).

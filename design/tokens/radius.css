@@ -1,0 +1,15 @@
+/* Latch — Radius tokens. macOS-leaning: soft, generous, never fully pill except chips. */
+:root {
+  --radius-xs:  4px;
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  18px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 999px;
+
+  --radius-keycap: 7px;   /* keyboard caps */
+  --radius-panel: 16px;   /* the floating app panel */
+  --radius-card:  14px;
+}

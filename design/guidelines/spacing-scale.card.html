@@ -1,0 +1,29 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Spacing Scale" subtitle="4px base grid · tokens space-1 → space-12" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-50); padding: 18px 22px; }
+  .row { display: flex; align-items: flex-end; gap: 14px; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bar { background: var(--green-500); border-radius: var(--radius-xs); width: 18px; }
+  .item span { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="bar" style="height:4px"></div><span>2</span></div>
+    <div class="item"><div class="bar" style="height:8px"></div><span>4</span></div>
+    <div class="item"><div class="bar" style="height:12px"></div><span>8</span></div>
+    <div class="item"><div class="bar" style="height:16px"></div><span>12</span></div>
+    <div class="item"><div class="bar" style="height:24px"></div><span>16</span></div>
+    <div class="item"><div class="bar" style="height:32px"></div><span>24</span></div>
+    <div class="item"><div class="bar" style="height:44px"></div><span>32</span></div>
+    <div class="item"><div class="bar" style="height:56px"></div><span>40</span></div>
+    <div class="item"><div class="bar" style="height:72px"></div><span>48</span></div>
+    <div class="item"><div class="bar" style="height:88px"></div><span>64</span></div>
+  </div>
+</body>
+</html>

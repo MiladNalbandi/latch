@@ -1,0 +1,28 @@
+/* Latch — Material / vibrancy tokens.
+   macOS-style translucent "glass" surfaces. Pair a --glass-* background with
+   backdrop-filter: blur(var(--blur-*)) saturate(var(--glass-saturate)), then add
+   the matching border + highlight for the pane edge. */
+:root {
+  /* Light vibrancy (popovers, panels, toolbars) — over a colorful backdrop */
+  --glass-strong:  rgba(249, 248, 244, 0.74); /* @kind color */
+  --glass:         rgba(249, 248, 244, 0.58); /* @kind color */
+  --glass-thin:    rgba(249, 248, 244, 0.42); /* @kind color */
+  --glass-content: rgba(255, 255, 255, 0.55); /* @kind color */ /* more opaque detail pane */
+
+  /* Dark vibrancy (menu bar, footer, HUD, toasts) */
+  --glass-ink:        rgba(24, 28, 35, 0.55);  /* @kind color */
+  --glass-ink-strong: rgba(20, 24, 30, 0.68);  /* @kind color */
+
+  /* Pane edges + top inner highlight that sells the "pane of glass" look */
+  --glass-border:      rgba(255, 255, 255, 0.55); /* @kind color */
+  --glass-border-ink:  rgba(255, 255, 255, 0.10); /* @kind color */
+  --glass-hairline:    rgba(17, 20, 26, 0.07);     /* @kind color */ /* subtle divider on light glass */
+  --glass-highlight:     inset 0 1px 0 rgba(255, 255, 255, 0.65); /* @kind shadow */
+  --glass-highlight-ink: inset 0 1px 0 rgba(255, 255, 255, 0.08); /* @kind shadow */
+
+  /* Blur radii + saturation for backdrop-filter */
+  --blur-thin:  18px;  /* @kind other */
+  --blur:       32px;  /* @kind other */
+  --blur-thick: 50px;  /* @kind other */
+  --glass-saturate: 180%; /* @kind other */
+}

@@ -32,9 +32,20 @@ logic in the engine.
   returning nil for no match, and `filter(_:query:) -> [ClipItem]`) that are
   unit-testable without UI.
 
+## v0.1 (Latch) addendum — filters + quick-pick
+
+- **05-AC-7.** THE SYSTEM SHALL match against the clip's content **and** its `source` app
+  name (case-insensitive).
+- **05-AC-8.** THE SYSTEM SHALL support a **filter chip** dimension orthogonal to the query:
+  `All`, `Pinned`, `Links`, `Text`, `Code`, `Colors` (map to `ClipType`/`pinned`). The
+  active filter narrows the set before fuzzy ranking.
+- **05-AC-9.** Within results, **pinned** clips SHALL sort first (consistent with the store),
+  then by score, then recency.
+- **05-AC-10.** Pressing a number key **1–9** in the panel SHALL select/activate the Nth
+  visible result (feature 08).
+
 ## Out of scope
 
-- Highlighting matched character ranges in the UI (nice-to-have; can be added later
-  without changing the scoring contract).
-- Searching RTF styling or non-text content.
-- Regex / token / field-scoped search (post-MVP).
+- Highlighting matched character ranges in the UI (nice-to-have).
+- Searching RTF styling or pixel content.
+- Regex / token / field-scoped search (post-v0.1).

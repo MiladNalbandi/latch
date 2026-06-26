@@ -1,0 +1,106 @@
+<!-- @dsCard group="Latch Website" viewport="1280x900" name="Marketing Site" subtitle="Hero, features, security, pricing — full landing page" -->
+<!-- @startingPoint section="Latch Website" subtitle="Product landing page" viewport="1280x900" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latch — The friendly, private clipboard for Mac</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { font-family: var(--font-sans); background: var(--paper-50); color: var(--text-body); -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { font-family: var(--font-display); color: var(--ink-900); margin: 0; letter-spacing: var(--tracking-tight); }
+  a { color: inherit; text-decoration: none; }
+  .site { overflow-x: hidden; }
+
+  /* ---------- Nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(251,250,246,0.82); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+  .nav__inner { max-width: var(--container-max); margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; }
+  .nav__brand { display: flex; align-items: center; gap: 9px; font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--ink-900); letter-spacing: -0.02em; }
+  .nav__links { display: flex; gap: 26px; font-size: 14.5px; font-weight: 500; color: var(--text-body); }
+  .nav__links a:hover { color: var(--green-700); }
+  .nav__cta { display: flex; align-items: center; gap: 16px; }
+  .nav__signin { font-size: 14.5px; font-weight: 600; color: var(--text-body); }
+  .nav__signin:hover { color: var(--green-700); }
+
+  /* ---------- Hero ---------- */
+  .hero { max-width: var(--container-max); margin: 0 auto; padding: 64px 28px 56px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
+  .hero__copy h1 { font-size: 60px; line-height: 1.02; margin: 18px 0 0; font-weight: 700; }
+  .hero__copy p { font-size: 18px; line-height: 1.6; color: var(--text-muted); max-width: 460px; margin: 18px 0 28px; }
+  .hero__actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .hero__shortcut { font-size: 14px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 8px; }
+  .hero__trust { display: flex; gap: 22px; margin-top: 26px; font-size: 13.5px; font-weight: 500; color: var(--text-muted); }
+  .hero__trust span { display: inline-flex; align-items: center; gap: 7px; }
+  .hero__trust svg { color: var(--green-500); }
+
+  .hero__panel { background: var(--paper-0); border: 1px solid var(--line); border-radius: var(--radius-panel); box-shadow: var(--shadow-xl); overflow: hidden; transform: rotate(0.4deg); }
+  .hero__panel-search { display: flex; align-items: center; gap: 10px; padding: 15px 16px; border-bottom: 1px solid var(--line); color: var(--text-faint); font-size: 15px; }
+  .hero__panel-badge { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--blue-600); background: var(--secure-tint); padding: 4px 9px; border-radius: var(--radius-full); }
+  .hero__panel-list { padding: 8px; }
+  .hero__panel-foot { display: flex; align-items: center; gap: 16px; padding: 11px 16px; background: var(--ink-surface); color: var(--text-on-ink-muted); font-size: 12px; }
+  .hero__panel-foot span { display: inline-flex; align-items: center; gap: 7px; }
+
+  /* ---------- Sections ---------- */
+  .sec { max-width: var(--container-max); margin: 0 auto; padding: 72px 28px; }
+  .sec__head { text-align: center; max-width: 640px; margin: 0 auto 44px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .sec__head h2 { font-size: 40px; line-height: 1.1; font-weight: 700; }
+
+  .feat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .feat__ico { width: 44px; height: 44px; border-radius: var(--radius-md); background: var(--primary-tint); color: var(--green-700); display: grid; place-items: center; margin-bottom: 16px; }
+  .feat__title { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.01em; margin-bottom: 8px; }
+  .feat__body { font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+
+  /* ---------- Security ---------- */
+  .security { background: var(--ink-surface); color: var(--text-on-ink); }
+  .security__inner { max-width: var(--container-max); margin: 0 auto; padding: 80px 28px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 56px; align-items: center; }
+  .security__copy h2 { color: #fff; font-size: 38px; line-height: 1.12; font-weight: 700; margin: 16px 0 18px; }
+  .security__copy p { font-size: 16.5px; line-height: 1.6; color: var(--text-on-ink-muted); margin: 0 0 24px; max-width: 480px; }
+  .security__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 13px; }
+  .security__list li { display: flex; align-items: center; gap: 11px; font-size: 15.5px; color: var(--text-on-ink); }
+  .security__list svg { color: var(--green-400); flex: none; }
+  .security__card { background: linear-gradient(165deg, var(--ink-surface-2), #14181f); border: 1px solid var(--ink-line); border-radius: var(--radius-2xl); padding: 32px; text-align: center; box-shadow: var(--shadow-xl); }
+  .security__lock { width: 60px; height: 60px; border-radius: var(--radius-lg); background: rgba(47,111,237,0.18); color: var(--blue-300); display: grid; place-items: center; margin: 0 auto 18px; }
+  .security__big { font-family: var(--font-display); font-size: 64px; font-weight: 800; color: #fff; line-height: 1; }
+  .security__sub { font-size: 14px; color: var(--text-on-ink-muted); margin-top: 6px; }
+  .security__divider { height: 1px; background: var(--ink-line); margin: 24px 0; }
+  .security__stat { display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 7px 0; color: var(--text-on-ink-muted); }
+  .security__stat b { color: var(--green-400); font-family: var(--font-mono); }
+
+  /* ---------- Pricing ---------- */
+  .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 760px; margin: 0 auto; }
+  .price { position: relative; display: flex; flex-direction: column; }
+  .price--feat { outline: 2px solid var(--primary); }
+  .price__tag { position: absolute; top: 18px; right: 18px; }
+  .price__name { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--ink-900); }
+  .price__amount { font-family: var(--font-display); font-size: 46px; font-weight: 800; color: var(--ink-900); margin: 8px 0 20px; letter-spacing: -0.02em; }
+  .price__amount span { font-family: var(--font-sans); font-size: 15px; font-weight: 500; color: var(--text-muted); margin-left: 4px; letter-spacing: 0; }
+  .price__feats { list-style: none; padding: 0; margin: 0 0 24px; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+  .price__feats li { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--text-body); }
+  .price__feats svg { color: var(--green-500); flex: none; }
+
+  /* ---------- Footer ---------- */
+  .foot { background: var(--ink-900); color: var(--text-on-ink-muted); }
+  .foot__inner { max-width: var(--container-max); margin: 0 auto; padding: 56px 28px 40px; display: grid; grid-template-columns: 1.2fr 1.8fr; gap: 40px; }
+  .foot__brand p { font-size: 14.5px; line-height: 1.6; max-width: 280px; margin: 16px 0 18px; }
+  .foot__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .foot__cols h4 { font-family: var(--font-sans); font-size: 12px; font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--text-on-ink); margin-bottom: 14px; }
+  .foot__cols a { display: block; font-size: 14px; padding: 5px 0; color: var(--text-on-ink-muted); }
+  .foot__cols a:hover { color: #fff; }
+  .foot__bar { max-width: var(--container-max); margin: 0 auto; padding: 20px 28px; border-top: 1px solid var(--ink-line); display: flex; justify-content: space-between; font-size: 13px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="../app/Icons.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="Site.jsx" data-presets="react"></script>
+<script type="text/babel" data-presets="react">
+  ReactDOM.createRoot(document.getElementById('root')).render(<window.LatchSite />);
+</script>
+</body>
+</html>

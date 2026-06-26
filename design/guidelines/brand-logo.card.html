@@ -1,0 +1,26 @@
+<!-- @dsCard group="Brand" viewport="700x180" name="Logo" subtitle="Mark, wordmark, and on-ink lockup" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-50); padding: 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .cell { padding: 22px 24px; display: flex; align-items: center; gap: 16px; }
+  .cell.ink { background: var(--ink-surface); }
+  .cell.paper { background: var(--paper-0); }
+  .cell.tint { background: var(--green-50); }
+  img { display: block; }
+  .cap { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); margin-top: 4px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="cell paper"><img src="../assets/latch-wordmark.svg" height="40" alt="Latch"></div>
+    <div class="cell ink"><img src="../assets/latch-wordmark-onink.svg" height="40" alt="Latch on ink"></div>
+    <div class="cell tint"><img src="../assets/latch-mark.svg" width="48" alt="mark"><img src="../assets/latch-mark.svg" width="36" alt="mark"><img src="../assets/latch-mark.svg" width="28" alt="mark"></div>
+    <div class="cell paper" style="border-left:1px solid var(--line)"><img src="../assets/latch-mark.svg" width="44" alt="mark"><span style="font-family:var(--font-display);font-weight:700;font-size:24px;letter-spacing:-.02em;color:var(--ink-900)">Latch</span></div>
+  </div>
+</body>
+</html>

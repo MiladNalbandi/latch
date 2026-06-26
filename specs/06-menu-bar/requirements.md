@@ -33,8 +33,16 @@ app runs as an agent (no Dock icon).
 - **06-AC-8.** WHEN the app is about to terminate, THE SYSTEM SHALL flush the history
   store's persistence (so the latest state is saved).
 
+## v0.1 (Latch) addendum
+
+- **06-AC-9.** WHEN "Show item count in menu bar" (feature 09) is enabled, THE SYSTEM SHALL
+  display the history item count next to the status icon.
+- **06-AC-10.** WHILE incognito/paused (feature 13), THE SYSTEM SHALL indicate the paused
+  state in the menu bar (e.g. a dimmed/“pause” icon variant).
+- **06-AC-11.** The status menu SHALL include a "Pause capturing (incognito)" toggle as a
+  quick control mirroring the Settings option.
+
 ## Out of scope
 
-- Showing history items directly in the status menu (MVP opens a dedicated window;
-  could be added later).
-- A custom-drawn status icon / badge counts.
+- Showing the full history inline in the status menu (the panel is the surface).
+- A custom-drawn status icon beyond SF Symbol + count.

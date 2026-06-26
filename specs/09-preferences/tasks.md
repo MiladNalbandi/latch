@@ -1,31 +1,31 @@
-# 09 — Preferences — Tasks
+# 09 — Settings — Tasks
 
-- [ ] **T-09.1** Implement `Preferences` (engine) with clamped `historyCap` /
-  `pollInterval`, ranges, defaults, and `UserDefaults` persistence. _(09-AC-2, 09-AC-4,
-  09-AC-8, 09-AC-9)_
-- [ ] **T-09.2** Implement `PreferencesView` with a history-size Stepper, poll-interval
-  Slider, `KeyboardShortcuts.Recorder`, and launch-at-login Toggle. _(09-AC-2, 09-AC-4,
-  09-AC-6, 09-AC-7)_
-- [ ] **T-09.3** Apply changes live: history size → `store.setCap`, poll interval →
-  `monitor.setInterval` (via Combine sinks or view closures in `AppDelegate`). _(09-AC-3,
-  09-AC-5)_
-- [ ] **T-09.4** Implement `PreferencesWindowController` (single titled window) opened from
-  the status menu. _(09-AC-1)_
-- [ ] **T-09.5** Bind the launch-at-login toggle to `LoginItemManager` (feature 10).
-  _(09-AC-7)_
+- [ ] **T-09.1** Extend `Preferences` (engine): `historyCap`, `pollInterval`, `soundOnCopy`,
+  `showCountInMenuBar`, `ignorePasswords`, `clearOnLock`, `incognito`, `accentKey` —
+  `UserDefaults`-backed, clamped, with defaults. _(09-AC-11, 09-AC-12)_
+- [ ] **T-09.2** `SettingsWindowController` (single titled "pasta Settings" window) opened
+  from menu + panel gear. _(09-AC-1)_
+- [ ] **T-09.3** `SettingsView` tabs General / Privacy / Sync(disabled "Coming soon").
+  _(09-AC-1)_
+- [ ] **T-09.4** General: accent picker (→ AccentStore), launch-at-login, sound-on-copy,
+  show-count, two shortcut recorders. _(09-AC-2…6)_
+- [ ] **T-09.5** Privacy: banner, ignore-passwords, clear-on-lock, incognito, history-size,
+  Clear-all (with confirm). _(09-AC-7…10)_
+- [ ] **T-09.6** Wire live application in `AppDelegate` (cap, interval, incognito, count,
+  accent, sound). _(09-AC-9, 09-AC-13)_
 
-## Tests (PastaEngineTests — Preferences only; UI verified manually)
+## Tests (PastaEngineTests — Preferences only; UI manual)
 
-- [ ] **TT-09.a** Setting `historyCap` out of range clamps to bounds. _(09-AC-9)_
-- [ ] **TT-09.b** Setting `pollInterval` out of range clamps to bounds. _(09-AC-9)_
-- [ ] **TT-09.c** Unset defaults return 200 / 0.5; set values round-trip via a custom
-  `UserDefaults(suiteName:)`. _(09-AC-8)_
+- [ ] **TT-09.a** Numeric clamp for `historyCap`/`pollInterval`. _(09-AC-12)_
+- [ ] **TT-09.b** Defaults when unset (200 / 0.5 / sound off / count on / ignore-pw on);
+  round-trip via `UserDefaults(suiteName:)`. _(09-AC-11)_
+- [ ] **TT-09.c** Bool toggles persist and reload. _(09-AC-11)_
 
-## Verification (manual, on a Mac)
+## Verification (manual, on a Mac) — compare to /design/ui_kits/app/LatchSettings.jsx
 
-- [ ] Open Preferences from the menu. _(09-AC-1)_
-- [ ] Lower history size below current count → oldest items immediately evicted. _(09-AC-3)_
-- [ ] Change poll interval → new captures still detected at the new cadence. _(09-AC-5)_
-- [ ] Record a new hotkey → it works immediately and after relaunch. _(09-AC-6)_
-- [ ] Toggle launch-at-login → reflected in System Settings → General → Login Items.
-  _(09-AC-7)_
+- [ ] Open "pasta Settings"; General/Privacy tabs render; Sync disabled. _(09-AC-1)_
+- [ ] Accent picker recolors selection/controls live. _(09-AC-2)_
+- [ ] Lower history size → eviction; toggle sound → tick on copy; toggle count → menu bar
+  updates. _(09-AC-4, 09-AC-5, 09-AC-9)_
+- [ ] Ignore-passwords / clear-on-lock / incognito behave per features 02/13. _(09-AC-8)_
+- [ ] Clear all empties history after confirm. _(09-AC-10)_
