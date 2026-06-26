@@ -3,6 +3,10 @@ name: Release
 on:
   push:
     tags: [ "v*" ]
+    # Fallback trigger for environments where tags/dispatch aren't available:
+    # bump RELEASE_VERSION on the dev branch to cut a release.
+    branches: [ "claude/clipboard-history-mvp-5vqkt4" ]
+    paths: [ "RELEASE_VERSION" ]
   workflow_dispatch:
     inputs:
       version:
@@ -27,9 +31,12 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             V="${{ github.event.inputs.version }}"
-          else
+          elif [ "${{ github.ref_type }}" = "tag" ]; then
             V="${GITHUB_REF_NAME#v}"
+          else
+            V="$(tr -d '[:space:]' < RELEASE_VERSION)"
           fi
+          if [ -z "$V" ]; then echo "Could not resolve version"; exit 1; fi
           echo "version=$V"   >> "$GITHUB_OUTPUT"
           echo "tag=v$V"      >> "$GITHUB_OUTPUT"
           echo "Releasing Latch $V"

@@ -30,10 +30,12 @@ Apple Silicon + Intel).
   (SwiftFormat/SwiftLint), all on `macos-15`.
 - **Release** (`.github/workflows/release.yml`) — on a `v*` tag (or manual dispatch): builds
   a universal Release `Latch.app`, ad-hoc signs it, packages a `.dmg` (with a `.sha256`),
-  and publishes a GitHub Release with the DMG attached. Cut a release with:
+  and publishes a GitHub Release with the DMG attached. Cut a release by pushing a tag:
   ```sh
   git tag v0.1.0 && git push origin v0.1.0
   ```
+  (Or, where tag pushes aren't permitted, bump `RELEASE_VERSION` on the dev branch — the
+  same workflow triggers on a change to that file and reads the version from it.)
 
 ## Build & run (macOS)
 
