@@ -1,0 +1,121 @@
+name: Release
+
+on:
+  push:
+    tags: [ "v*" ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, without the leading v (e.g. 0.1.0)"
+        required: true
+
+permissions:
+  contents: write   # needed to create the GitHub Release and upload the DMG
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: macos-15   # Xcode 16.x
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            V="${{ github.event.inputs.version }}"
+          else
+            V="${GITHUB_REF_NAME#v}"
+          fi
+          echo "version=$V"   >> "$GITHUB_OUTPUT"
+          echo "tag=v$V"      >> "$GITHUB_OUTPUT"
+          echo "Releasing Latch $V"
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build Latch.app (Release, universal)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Latch.xcodeproj \
+            -scheme LatchApp \
+            -configuration Release \
+            -derivedDataPath build \
+            -destination 'generic/platform=macOS' \
+            ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO \
+            MARKETING_VERSION="${{ steps.ver.outputs.version }}" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Ad-hoc sign the app
+        id: app
+        run: |
+          APP="$(find build/Build/Products/Release -maxdepth 1 -name 'Latch.app' -print -quit)"
+          if [ -z "$APP" ]; then echo "Latch.app not found"; exit 1; fi
+          echo "Built app: $APP"
+          # Ad-hoc signature so the app launches on Apple Silicon (still unsigned for Gatekeeper).
+          codesign --force --deep --sign - "$APP"
+          codesign --verify --deep --strict "$APP" || true
+          echo "path=$APP" >> "$GITHUB_OUTPUT"
+
+      - name: Package DMG
+        id: dmg
+        run: |
+          V="${{ steps.ver.outputs.version }}"
+          STAGING="dmg-staging"
+          mkdir -p "$STAGING"
+          cp -R "${{ steps.app.outputs.path }}" "$STAGING/"
+          ln -s /Applications "$STAGING/Applications"   # drag-to-install target
+          DMG="Latch-$V.dmg"
+          hdiutil create -volname "Latch $V" -srcfolder "$STAGING" -ov -format UDZO "$DMG"
+          shasum -a 256 "$DMG" | tee "$DMG.sha256"
+          echo "dmg=$DMG" >> "$GITHUB_OUTPUT"
+
+      - name: Upload DMG as build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Latch-${{ steps.ver.outputs.version }}-dmg
+          path: |
+            ${{ steps.dmg.outputs.dmg }}
+            ${{ steps.dmg.outputs.dmg }}.sha256
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: Latch ${{ steps.ver.outputs.version }}
+          draft: false
+          prerelease: true
+          fail_on_unmatched_files: true
+          files: |
+            ${{ steps.dmg.outputs.dmg }}
+            ${{ steps.dmg.outputs.dmg }}.sha256
+          body: |
+            ## Latch ${{ steps.ver.outputs.version }}
+
+            The friendly, private clipboard for macOS — copy once, paste anywhere with one
+            keystroke, and nothing ever leaves your Mac.
+
+            ### Install
+            1. Download **Latch-${{ steps.ver.outputs.version }}.dmg** below.
+            2. Open it and drag **Latch** into **Applications**.
+            3. First launch: right-click **Latch.app → Open** (this build is unsigned, so
+               Gatekeeper asks once). If macOS says it's "damaged", run:
+               `xattr -dr com.apple.quarantine /Applications/Latch.app`
+
+            ### Use
+            - Press **⌘⇧V** anywhere to open your clipboard history.
+            - Type to fuzzy-search, filter by type, **↩** to copy a clip back, **⎋** to close.
+            - Settings live in the menu-bar icon. History is stored **encrypted** on-device.
+
+            ### Notes
+            - Requires macOS 13 (Ventura) or later. Universal (Apple Silicon + Intel).
+            - Unsigned / not notarized — for early testers. Verify the download with the
+              published `.sha256`.
