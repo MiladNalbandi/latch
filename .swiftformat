@@ -1,0 +1,31 @@
+# SwiftFormat configuration for pasta.
+# Run locally: `make format` (apply) or `make format-check` (verify).
+# Requires `brew install swiftformat`.
+
+--swiftversion 5.9
+
+# Layout
+--indent 4
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--funcattributes prev-line
+--typeattributes prev-line
+
+# Style
+--self remove
+--importgrouping testable-bottom
+--commas inline
+--trailingclosures
+--semicolons never
+--ranges no-space
+--emptybraces no-space
+--marktypes never        # we hand-author "// MARK:" sections; don't auto-rewrite
+
+# Cleanup
+--redundanttype inferred
+--stripunusedargs closure-only
+
+# Excludes (third-party reference + generated output)
+--exclude .build,DerivedData,design,Pods

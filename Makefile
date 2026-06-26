@@ -5,7 +5,7 @@ APP_SCHEME := PastaApp
 TEST_SCHEME := PastaEngineTests
 CONFIG := Debug
 
-.PHONY: gen build test run clean
+.PHONY: gen build test run clean lint format format-check check
 
 gen:
 	xcodegen generate
@@ -21,6 +21,18 @@ run: build
 		| awk '/ BUILT_PRODUCTS_DIR /{d=$$3}/ FULL_PRODUCT_NAME /{n=$$3}END{print d"/"n}'); \
 	echo "Launching $$APP_PATH"; \
 	open "$$APP_PATH"
+
+lint:
+	swiftlint lint
+
+format:
+	swiftformat .
+
+format-check:
+	swiftformat --lint .
+
+# Full local gate: format check, lint, build, test.
+check: format-check lint build test
 
 clean:
 	rm -rf $(PROJECT) .build DerivedData
