@@ -10,10 +10,10 @@
 
 ## Verification (manual, on a Mac)
 
-- [ ] Toggle launch-at-login ON in Preferences → pasta appears in System Settings →
+- [ ] Toggle launch-at-login ON in Preferences → Latch appears in System Settings →
   General → Login Items. _(10-AC-1, 10-AC-5)_
-- [ ] Log out and back in (or restart) → pasta launches automatically. _(10-AC-1)_
-- [ ] Toggle OFF → pasta removed from Login Items; does not auto-launch. _(10-AC-2)_
+- [ ] Log out and back in (or restart) → Latch launches automatically. _(10-AC-1)_
+- [ ] Toggle OFF → Latch removed from Login Items; does not auto-launch. _(10-AC-2)_
 - [ ] If registration fails (e.g. unsigned build needing approval), the app does not crash
   and the toggle reflects the real status. _(10-AC-4)_
 

@@ -6,9 +6,9 @@
 ## v0.1 Latch files
 
 ```
-Sources/PastaEngine/Preferences.swift              # UserDefaults config (engine)
-Sources/PastaApp/SettingsWindowController.swift    # single titled window host
-Sources/PastaApp/SettingsView.swift                # tabbed: General / Privacy / Sync(disabled)
+Sources/LatchEngine/Preferences.swift              # UserDefaults config (engine)
+Sources/LatchApp/SettingsWindowController.swift    # single titled window host
+Sources/LatchApp/SettingsView.swift                # tabbed: General / Privacy / Sync(disabled)
 ```
 
 `Preferences` (engine) gains, beyond `historyCap`/`pollInterval`:
@@ -29,9 +29,9 @@ menu bar`, `showCountInMenuBar→status item`, `accentKey→AccentStore`.
 ## Files
 
 ```
-Sources/PastaEngine/Preferences.swift            # UserDefaults-backed config (engine)
-Sources/PastaApp/PreferencesView.swift           # SwiftUI form
-Sources/PastaApp/PreferencesWindowController.swift # hosts the form in a normal window
+Sources/LatchEngine/Preferences.swift            # UserDefaults-backed config (engine)
+Sources/LatchApp/PreferencesView.swift           # SwiftUI form
+Sources/LatchApp/PreferencesWindowController.swift # hosts the form in a normal window
 ```
 
 ## Preferences (engine)
@@ -51,7 +51,7 @@ public final class Preferences: ObservableObject {
 }
 ```
 
-- Keys: `"pasta.historyCap"`, `"pasta.pollInterval"`. Missing → defaults (09-AC-8).
+- Keys: `"latch.historyCap"`, `"latch.pollInterval"`. Missing → defaults (09-AC-8).
 - Setters clamp to the allowed range (09-AC-9).
 - Hotkey is owned by `KeyboardShortcuts` (its own UserDefaults storage), not here.
 

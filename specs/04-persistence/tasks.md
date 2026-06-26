@@ -13,7 +13,7 @@
 - [ ] **T-04.7** Wire `flush()` into the app's `applicationWillTerminate`
   (cross-references feature 06 wiring). _(04-AC-8)_
 
-## Tests (PastaEngineTests / PersistenceTests, using a temp-dir fileURL)
+## Tests (LatchEngineTests / PersistenceTests, using a temp-dir fileURL)
 
 - [ ] **TT-04.a** `save` then `load` round-trips an array of `ClipItem`s equal to the
   input. _(04-AC-1, 04-AC-2, 04-AC-3)_
@@ -29,5 +29,5 @@
 ## Verification
 
 `make test` passes `PersistenceTests`. Manual: copy items, quit the app, relaunch →
-history is intact. Inspect `~/Library/Application Support/pasta/history.json` to confirm
+history is intact. Inspect `~/Library/Application Support/Latch/history.json` to confirm
 content is present and well-formed.

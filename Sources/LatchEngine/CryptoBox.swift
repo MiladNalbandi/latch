@@ -22,7 +22,7 @@ public final class CryptoBox {
     }
 
     /// App default: key lives in the login Keychain.
-    public convenience init(service: String = "com.pasta.history-key", account: String = "default") {
+    public convenience init(service: String = "com.latch.history-key", account: String = "default") {
         self.init(keyStore: KeychainKeyStore(service: service, account: account))
     }
 
@@ -61,7 +61,7 @@ public final class KeychainKeyStore: KeyStoring {
     private let service: String
     private let account: String
 
-    public init(service: String = "com.pasta.history-key", account: String = "default") {
+    public init(service: String = "com.latch.history-key", account: String = "default") {
         self.service = service
         self.account = account
     }

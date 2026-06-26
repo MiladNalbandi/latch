@@ -1,5 +1,5 @@
 import Foundation
-@testable import PastaEngine
+@testable import LatchEngine
 
 /// A scriptable pasteboard for driving the monitor in tests.
 final class FakePasteboard: PasteboardReading {

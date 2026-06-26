@@ -1,4 +1,4 @@
-# SwiftFormat configuration for pasta.
+# SwiftFormat configuration for Latch.
 # Run locally: `make format` (apply) or `make format-check` (verify).
 # Requires `brew install swiftformat`.
 #

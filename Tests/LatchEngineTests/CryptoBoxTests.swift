@@ -1,5 +1,5 @@
 import XCTest
-@testable import PastaEngine
+@testable import LatchEngine
 
 final class CryptoBoxTests: XCTestCase {
     /// Use an in-memory key store so tests don't depend on a login Keychain (CI-safe).

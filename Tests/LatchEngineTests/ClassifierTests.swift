@@ -1,5 +1,5 @@
 import XCTest
-@testable import PastaEngine
+@testable import LatchEngine
 
 final class ClassifierTests: XCTestCase {
     let c = ClipClassifier()
@@ -11,8 +11,8 @@ final class ClassifierTests: XCTestCase {
     }
 
     func testLink() {
-        XCTAssertEqual(c.classify(text: "https://pasta.app/x", types: [], source: nil), .link)
-        XCTAssertEqual(c.classify(text: "mailto:you@pasta.app", types: [], source: nil), .link)
+        XCTAssertEqual(c.classify(text: "https://Latch.app/x", types: [], source: nil), .link)
+        XCTAssertEqual(c.classify(text: "mailto:you@Latch.app", types: [], source: nil), .link)
         XCTAssertEqual(c.classify(text: "github.com/x/y", types: [], source: nil), .link)
         XCTAssertNotEqual(c.classify(text: "hello world", types: [], source: nil), .link)
     }

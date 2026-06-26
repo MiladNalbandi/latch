@@ -1,5 +1,5 @@
 import SwiftUI
-import PastaEngine
+import LatchEngine
 
 /// The right-hand preview + actions for the selected clip. See specs/08-history-window.
 struct PreviewPane: View {

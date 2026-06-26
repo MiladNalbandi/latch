@@ -1,6 +1,6 @@
 import Foundation
 import Combine
-import PastaEngine
+import LatchEngine
 
 /// Drives the history panel: query + filter chip → results, selection, and actions
 /// (copy-back, pin, delete). See specs/08-history-window.

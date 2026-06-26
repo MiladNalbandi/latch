@@ -9,7 +9,7 @@ persist via `UserDefaults`.
 
 ## User stories
 
-- **US-1.** As a user, I want a familiar Settings window to tune pasta.
+- **US-1.** As a user, I want a familiar Settings window to tune Latch.
 - **US-2.** As a user, I want to set the accent color, shortcuts, and startup behavior.
 - **US-3.** As a privacy-conscious user, I want clear controls for what's captured and the
   ability to clear everything.
@@ -17,7 +17,7 @@ persist via `UserDefaults`.
 ## Acceptance criteria (EARS)
 
 ### Window
-- **09-AC-1.** THE SYSTEM SHALL provide a titled "pasta Settings" window opened from the
+- **09-AC-1.** THE SYSTEM SHALL provide a titled "Latch Settings" window opened from the
   status menu and the panel's gear button, with tabs **General**, **Privacy**, and a
   disabled **Sync** ("Coming soon"). Single instance; re-open brings it to front.
 

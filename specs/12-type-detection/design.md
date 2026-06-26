@@ -3,8 +3,8 @@
 ## Files
 
 ```
-Sources/PastaEngine/ClipType.swift        # enum + SF Symbol + tile styling key
-Sources/PastaEngine/ClipClassifier.swift  # pure classification
+Sources/LatchEngine/ClipType.swift        # enum + SF Symbol + tile styling key
+Sources/LatchEngine/ClipClassifier.swift  # pure classification
 ```
 
 ## ClipType

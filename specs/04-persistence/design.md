@@ -3,7 +3,7 @@
 ## Files
 
 ```
-Sources/PastaEngine/HistoryPersisting.swift     # protocol + JSONHistoryPersistence
+Sources/LatchEngine/HistoryPersisting.swift     # protocol + JSONHistoryPersistence
 ```
 
 ## Protocol
@@ -21,7 +21,7 @@ public protocol HistoryPersisting {
 public final class JSONHistoryPersistence: HistoryPersisting {
     private let fileURL: URL
     private let fileManager: FileManager
-    private let queue = DispatchQueue(label: "com.pasta.persistence")
+    private let queue = DispatchQueue(label: "com.latch.persistence")
     private var pendingSave: DispatchWorkItem?
     private let debounceInterval: TimeInterval
 
@@ -30,9 +30,9 @@ public final class JSONHistoryPersistence: HistoryPersisting {
                 debounceInterval: TimeInterval = 0.5)
 
     public static var defaultURL: URL {
-        // ~/Library/Application Support/pasta/history.json
+        // ~/Library/Application Support/Latch/history.json
         // FileManager.url(for: .applicationSupportDirectory, in: .userDomainMask, ...)
-        //   .appendingPathComponent("pasta", isDirectory: true)
+        //   .appendingPathComponent("Latch", isDirectory: true)
         //   .appendingPathComponent("history.json")
     }
 

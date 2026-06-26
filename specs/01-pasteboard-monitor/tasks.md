@@ -14,10 +14,10 @@
   a spurious first capture. _(01-AC-2)_
 - [ ] **T-01.7** Implement `setInterval(_:)` that reschedules without resetting
   `lastChangeCount`. _(01-AC-9)_
-- [ ] **T-01.8** Add a `FakePasteboard` test double in `Tests/PastaEngineTests`.
+- [ ] **T-01.8** Add a `FakePasteboard` test double in `Tests/LatchEngineTests`.
   _(supports 01-AC-7 testing)_
 
-## Tests (PastaEngineTests / ClipboardMonitorTests)
+## Tests (LatchEngineTests / ClipboardMonitorTests)
 
 - [ ] **TT-01.a** Driving the fake so `changeCount` increments with plain text → exactly
   one `onCapture` with matching `plainText`. _(01-AC-2, 01-AC-3, 01-AC-6)_

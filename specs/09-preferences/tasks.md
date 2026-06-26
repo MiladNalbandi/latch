@@ -3,7 +3,7 @@
 - [ ] **T-09.1** Extend `Preferences` (engine): `historyCap`, `pollInterval`, `soundOnCopy`,
   `showCountInMenuBar`, `ignorePasswords`, `clearOnLock`, `incognito`, `accentKey` —
   `UserDefaults`-backed, clamped, with defaults. _(09-AC-11, 09-AC-12)_
-- [ ] **T-09.2** `SettingsWindowController` (single titled "pasta Settings" window) opened
+- [ ] **T-09.2** `SettingsWindowController` (single titled "Latch Settings" window) opened
   from menu + panel gear. _(09-AC-1)_
 - [ ] **T-09.3** `SettingsView` tabs General / Privacy / Sync(disabled "Coming soon").
   _(09-AC-1)_
@@ -14,7 +14,7 @@
 - [ ] **T-09.6** Wire live application in `AppDelegate` (cap, interval, incognito, count,
   accent, sound). _(09-AC-9, 09-AC-13)_
 
-## Tests (PastaEngineTests — Preferences only; UI manual)
+## Tests (LatchEngineTests — Preferences only; UI manual)
 
 - [ ] **TT-09.a** Numeric clamp for `historyCap`/`pollInterval`. _(09-AC-12)_
 - [ ] **TT-09.b** Defaults when unset (200 / 0.5 / sound off / count on / ignore-pw on);
@@ -23,7 +23,7 @@
 
 ## Verification (manual, on a Mac) — compare to /design/ui_kits/app/LatchSettings.jsx
 
-- [ ] Open "pasta Settings"; General/Privacy tabs render; Sync disabled. _(09-AC-1)_
+- [ ] Open "Latch Settings"; General/Privacy tabs render; Sync disabled. _(09-AC-1)_
 - [ ] Accent picker recolors selection/controls live. _(09-AC-2)_
 - [ ] Lower history size → eviction; toggle sound → tick on copy; toggle count → menu bar
   updates. _(09-AC-4, 09-AC-5, 09-AC-9)_

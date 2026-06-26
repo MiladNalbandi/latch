@@ -1,6 +1,6 @@
 # Architecture
 
-pasta is a macOS menu-bar clipboard manager. This document describes how the code is
+Latch is a macOS menu-bar clipboard manager. This document describes how the code is
 organized and the conventions every change should follow. For the per-feature contracts
 (requirements / design / acceptance criteria) see [`specs/`](specs/README.md); for the
 visual system see [`design/`](design/DESIGN-SYSTEM.md).
@@ -10,17 +10,17 @@ visual system see [`design/`](design/DESIGN-SYSTEM.md).
 Two modules with a **strict one-way dependency**:
 
 ```
-PastaApp  ──depends on──▶  PastaEngine
+LatchApp  ──depends on──▶  LatchEngine
 (AppKit + SwiftUI UI)      (platform-light core logic)
 ```
 
-- **`PastaEngine`** owns all logic worth testing: capture, classification, privacy
+- **`LatchEngine`** owns all logic worth testing: capture, classification, privacy
   filtering, the history store, encryption/persistence, fuzzy search, and preferences.
-- **`PastaApp`** owns presentation and OS glue: the menu bar, the floating panel, settings,
+- **`LatchApp`** owns presentation and OS glue: the menu bar, the floating panel, settings,
   global hotkeys, login item, and the SwiftUI design system.
 - **The engine never imports the UI.** This keeps the core reusable and unit-testable, and
   prevents UI concerns from leaking into logic. CI and code review should reject any
-  `import`/reference from `PastaEngine` back into `PastaApp`.
+  `import`/reference from `LatchEngine` back into `LatchApp`.
 
 ## Boundaries are protocols (dependency inversion)
 
@@ -76,11 +76,11 @@ copy-back: PreviewPane/Enter → PasteboardWriting.write → (re-captured, dedup
   (`PrivacyFilter`, `ClipClassifier`, `FuzzyMatcher`) are `struct`s; reference types are for
   identity/lifecycle (stores, controllers, ObservableObjects).
 - **Testability first.** Pure logic is exhaustively unit-tested; OS-bound code is thin and
-  injected. New engine logic ships with tests in `Tests/PastaEngineTests`.
+  injected. New engine logic ships with tests in `Tests/LatchEngineTests`.
 
 ## Testing strategy
 
-- `Tests/PastaEngineTests` covers the engine against fakes — no Keychain, filesystem, or
+- `Tests/LatchEngineTests` covers the engine against fakes — no Keychain, filesystem, or
   pasteboard dependency at runtime (`PersistenceTests` writes to a temp dir with an
   `InMemoryKeyStore`). Tests are hermetic so they pass identically on a laptop and in CI.
 - UI is verified manually against the `design/ui_kits/app` reference (see `specs/*/tasks.md`

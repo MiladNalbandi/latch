@@ -3,20 +3,20 @@
 ## Files
 
 ```
-Sources/PastaApp/DesignSystem/Palette.swift       # colors (+ accent override)
-Sources/PastaApp/DesignSystem/Typography.swift    # font helpers
-Sources/PastaApp/DesignSystem/Metrics.swift        # radii, spacing, panel sizes
-Sources/PastaApp/DesignSystem/Elevation.swift      # shadows, insets, keycap style
-Sources/PastaApp/DesignSystem/VisualEffectView.swift # NSVisualEffectView wrapper
-Sources/PastaApp/DesignSystem/Motion.swift         # durations + springs (reduce-motion aware)
-Sources/PastaApp/DesignSystem/PBadge.swift
-Sources/PastaApp/DesignSystem/PKbd.swift
-Sources/PastaApp/DesignSystem/PButton.swift
-Sources/PastaApp/DesignSystem/PIconButton.swift
-Sources/PastaApp/DesignSystem/PSearchField.swift
-Sources/PastaApp/DesignSystem/PSwitch.swift
-Sources/PastaApp/DesignSystem/PCard.swift
-Sources/PastaApp/DesignSystem/ClipRow.swift
+Sources/LatchApp/DesignSystem/Palette.swift       # colors (+ accent override)
+Sources/LatchApp/DesignSystem/Typography.swift    # font helpers
+Sources/LatchApp/DesignSystem/Metrics.swift        # radii, spacing, panel sizes
+Sources/LatchApp/DesignSystem/Elevation.swift      # shadows, insets, keycap style
+Sources/LatchApp/DesignSystem/VisualEffectView.swift # NSVisualEffectView wrapper
+Sources/LatchApp/DesignSystem/Motion.swift         # durations + springs (reduce-motion aware)
+Sources/LatchApp/DesignSystem/PBadge.swift
+Sources/LatchApp/DesignSystem/PKbd.swift
+Sources/LatchApp/DesignSystem/PButton.swift
+Sources/LatchApp/DesignSystem/PIconButton.swift
+Sources/LatchApp/DesignSystem/PSearchField.swift
+Sources/LatchApp/DesignSystem/PSwitch.swift
+Sources/LatchApp/DesignSystem/PCard.swift
+Sources/LatchApp/DesignSystem/ClipRow.swift
 ```
 
 ## Palette (from /design/tokens/colors.css)

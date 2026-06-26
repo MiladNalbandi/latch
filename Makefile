@@ -1,8 +1,8 @@
-# pasta — build tooling. Requires XcodeGen + Xcode on macOS.
+# Latch — build tooling. Requires XcodeGen + Xcode on macOS.
 #   brew install xcodegen
-PROJECT := pasta.xcodeproj
-APP_SCHEME := PastaApp
-TEST_SCHEME := PastaEngineTests
+PROJECT := Latch.xcodeproj
+APP_SCHEME := LatchApp
+TEST_SCHEME := LatchEngineTests
 CONFIG := Debug
 
 .PHONY: gen build test run clean lint format format-check check

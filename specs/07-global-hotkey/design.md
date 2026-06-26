@@ -3,7 +3,7 @@
 ## Files
 
 ```
-Sources/PastaApp/HotkeyManager.swift
+Sources/LatchApp/HotkeyManager.swift
 ```
 
 Depends on the `KeyboardShortcuts` SPM package (declared in `project.yml`, feature 00).
@@ -58,5 +58,5 @@ feature needs to synthesize key events (e.g. auto-paste), that would require Acc
 
 ## Testing
 
-This feature is UI/system-integration and not unit-tested in `PastaEngineTests`. Verified
+This feature is UI/system-integration and not unit-tested in `LatchEngineTests`. Verified
 manually (see tasks). The toggle decision logic is exercised through feature 08.

@@ -3,7 +3,7 @@
 ## Files
 
 ```
-Sources/PastaApp/LoginItemManager.swift
+Sources/LatchApp/LoginItemManager.swift
 ```
 
 Uses `ServiceManagement` (`SMAppService`), available on macOS 13+ (matches our floor).
@@ -66,6 +66,6 @@ snaps back to the true state (10-AC-4).
 
 ## Testing
 
-System-integration; not unit-tested in `PastaEngineTests`. Verified manually (toggle on →
+System-integration; not unit-tested in `LatchEngineTests`. Verified manually (toggle on →
 appears in Login Items; relaunch at next login). The `LoginItemManager` lives in the app
 target (not the engine) since it's pure system glue.

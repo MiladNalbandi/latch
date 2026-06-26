@@ -1,5 +1,5 @@
 import XCTest
-@testable import PastaEngine
+@testable import LatchEngine
 
 final class PersistenceTests: XCTestCase {
     private var tmpDir: URL!
@@ -7,7 +7,7 @@ final class PersistenceTests: XCTestCase {
 
     override func setUpWithError() throws {
         tmpDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent("pasta-tests-" + UUID().uuidString, isDirectory: true)
+            .appendingPathComponent("Latch-tests-" + UUID().uuidString, isDirectory: true)
         fileURL = tmpDir.appendingPathComponent("history.dat")
     }
 
