@@ -9,7 +9,7 @@ struct PreviewPane: View {
     var onDelete: () -> Void
 
     var body: some View {
-        if let item = item {
+        if let item {
             content(item)
         } else {
             empty

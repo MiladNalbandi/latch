@@ -101,12 +101,9 @@ public struct ClipItem: Codable, Identifiable, Equatable, Sendable {
 
     /// Best-effort plain-text rendering of RTF data (no AppKit dependency here).
     static func plainText(fromRTF data: Data?) -> String? {
-        guard let data = data,
-              let s = try? NSAttributedString(
-                data: data,
-                options: [.documentType: NSAttributedString.DocumentType.rtf],
-                documentAttributes: nil
-              ) else { return nil }
-        return s.string
+        guard let data else { return nil }
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.rtf]
+        let attributed = try? NSAttributedString(data: data, options: options, documentAttributes: nil)
+        return attributed?.string
     }
 }
