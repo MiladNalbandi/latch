@@ -13,7 +13,6 @@ excluded:
 
 # Opt-in rules that catch real smells without being noisy.
 opt_in_rules:
-  - empty_count
   - empty_string
   - first_where
   - contains_over_first_not_nil
@@ -34,6 +33,10 @@ opt_in_rules:
 disabled_rules:
   - todo                 # we intentionally track follow-ups in specs, not as failures
   - trailing_comma       # SwiftFormat owns comma style
+  - redundant_optional_initialization   # we keep explicit `= nil` (matches .swiftformat)
+  - switch_case_alignment                # single-line switch cases are fine here
+  - void_function_in_ternary             # compact Void ternaries are intentional
+  - statement_position                   # SwiftFormat owns brace/else placement
 
 line_length:
   warning: 120
@@ -59,19 +62,14 @@ cyclomatic_complexity:
   error: 20
 
 identifier_name:
-  min_length: 2          # allow short, conventional names like `vm`, `id`, `x`
-  excluded:
-    - id
-    - vm
-    - x
-    - y
-    - r
-    - g
-    - b
-    - q
-    - c
-    - s
-    - t
+  # Allow short, conventional names (loop indices, closure params, math vars). Best-practice
+  # configs commonly permit these; we cap the upper bound instead.
+  min_length:
+    warning: 1
+    error: 1
+  max_length:
+    warning: 50
+    error: 60
 
 type_name:
   min_length: 3

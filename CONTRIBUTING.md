@@ -32,8 +32,8 @@ CI (`.github/workflows/ci.yml`) must be green:
 
 - **build-test** — builds `PastaApp` and runs `PastaEngineTests` on `macos-15`. This is the
   blocking gate.
-- **lint** — SwiftFormat (`--lint`) + SwiftLint. Currently non-blocking while the codebase
-  stabilizes; keep it clean so we can flip it to blocking.
+- **lint** — SwiftFormat (`--lint`) + SwiftLint. Blocking. Run `make format` + `make lint`
+  locally before pushing.
 
 Run `make check` locally before pushing to catch all of the above.
 
