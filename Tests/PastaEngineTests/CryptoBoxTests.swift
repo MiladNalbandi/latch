@@ -2,9 +2,9 @@ import XCTest
 @testable import PastaEngine
 
 final class CryptoBoxTests: XCTestCase {
-    /// Use a unique service per run so we don't collide with a real key in the Keychain.
+    /// Use an in-memory key store so tests don't depend on a login Keychain (CI-safe).
     private func uniqueBox() -> CryptoBox {
-        CryptoBox(service: "com.pasta.test." + UUID().uuidString, account: "test")
+        CryptoBox(keyStore: InMemoryKeyStore())
     }
 
     func testSealOpenRoundTrip() throws {

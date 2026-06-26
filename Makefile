@@ -11,10 +11,10 @@ gen:
 	xcodegen generate
 
 build: gen
-	xcodebuild -project $(PROJECT) -scheme $(APP_SCHEME) -configuration $(CONFIG) build
+	xcodebuild -project $(PROJECT) -scheme $(APP_SCHEME) -configuration $(CONFIG) -destination 'platform=macOS' build
 
 test: gen
-	xcodebuild -project $(PROJECT) -scheme $(TEST_SCHEME) -configuration $(CONFIG) test
+	xcodebuild -project $(PROJECT) -scheme $(TEST_SCHEME) -configuration $(CONFIG) -destination 'platform=macOS' test
 
 run: build
 	@APP_PATH=$$(xcodebuild -project $(PROJECT) -scheme $(APP_SCHEME) -configuration $(CONFIG) -showBuildSettings 2>/dev/null \

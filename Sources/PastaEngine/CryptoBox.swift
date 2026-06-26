@@ -2,18 +2,28 @@ import Foundation
 import CryptoKit
 import Security
 
-/// Manages the symmetric key used to encrypt history at rest. The key is generated once
-/// and stored in the login Keychain; subsequent runs reuse it. See specs/04-persistence.
+/// Stores/loads the symmetric key. Injectable so tests don't depend on a login Keychain.
+public protocol KeyStoring {
+    func loadKey() throws -> SymmetricKey?
+    func storeKey(_ key: SymmetricKey) throws
+}
+
+/// Manages the symmetric key used to encrypt history at rest. The key is generated once and
+/// stored via the injected `KeyStoring` (Keychain in the app); subsequent runs reuse it.
+/// See specs/04-persistence.
 public final class CryptoBox {
     public enum CryptoError: Error { case keyUnavailable, sealFailed, openFailed }
 
-    private let service: String
-    private let account: String
+    private let keyStore: KeyStoring
     private var cachedKey: SymmetricKey?
 
-    public init(service: String = "com.pasta.history-key", account: String = "default") {
-        self.service = service
-        self.account = account
+    public init(keyStore: KeyStoring) {
+        self.keyStore = keyStore
+    }
+
+    /// App default: key lives in the login Keychain.
+    public convenience init(service: String = "com.pasta.history-key", account: String = "default") {
+        self.init(keyStore: KeychainKeyStore(service: service, account: account))
     }
 
     // MARK: - Seal / open
@@ -35,18 +45,29 @@ public final class CryptoBox {
 
     private func key() throws -> SymmetricKey {
         if let cached = cachedKey { return cached }
-        if let existing = try loadKey() {
+        if let existing = try keyStore.loadKey() {
             cachedKey = existing
             return existing
         }
         let fresh = SymmetricKey(size: .bits256)
-        try storeKey(fresh)
+        try keyStore.storeKey(fresh)
         cachedKey = fresh
         return fresh
     }
+}
 
-    private func loadKey() throws -> SymmetricKey? {
-        var query: [String: Any] = baseQuery()
+/// Keychain-backed key storage (the app default).
+public final class KeychainKeyStore: KeyStoring {
+    private let service: String
+    private let account: String
+
+    public init(service: String = "com.pasta.history-key", account: String = "default") {
+        self.service = service
+        self.account = account
+    }
+
+    public func loadKey() throws -> SymmetricKey? {
+        var query = baseQuery()
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
 
@@ -59,20 +80,19 @@ public final class CryptoBox {
         case errSecItemNotFound:
             return nil
         default:
-            throw CryptoError.keyUnavailable
+            throw CryptoBox.CryptoError.keyUnavailable
         }
     }
 
-    private func storeKey(_ key: SymmetricKey) throws {
+    public func storeKey(_ key: SymmetricKey) throws {
         let data = key.withUnsafeBytes { Data($0) }
-        var attributes: [String: Any] = baseQuery()
+        var attributes = baseQuery()
         attributes[kSecValueData as String] = data
         attributes[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
 
-        // Remove any stale item, then add fresh.
         SecItemDelete(baseQuery() as CFDictionary)
         let status = SecItemAdd(attributes as CFDictionary, nil)
-        guard status == errSecSuccess else { throw CryptoError.keyUnavailable }
+        guard status == errSecSuccess else { throw CryptoBox.CryptoError.keyUnavailable }
     }
 
     private func baseQuery() -> [String: Any] {
@@ -82,4 +102,13 @@ public final class CryptoBox {
             kSecAttrAccount as String: account,
         ]
     }
+}
+
+/// In-memory key storage for tests (no Keychain dependency). Persists a fresh key for the
+/// lifetime of the instance.
+public final class InMemoryKeyStore: KeyStoring {
+    private var key: SymmetricKey?
+    public init() {}
+    public func loadKey() throws -> SymmetricKey? { key }
+    public func storeKey(_ key: SymmetricKey) throws { self.key = key }
 }
