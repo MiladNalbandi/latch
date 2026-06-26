@@ -4,7 +4,7 @@ import Combine
 /// In-memory authority for clipboard history: dedupe, pinned-first ordering, cap
 /// enforcement (pinned-safe), and persistence orchestration.
 /// See specs/03-history-store and /13-pinning-lifecycle.
-@MainActor
+/// Used on the main thread (AppKit callbacks / main-queue capture / SwiftUI).
 public final class HistoryStore: ObservableObject {
     @Published public private(set) var items: [ClipItem] = []
 
