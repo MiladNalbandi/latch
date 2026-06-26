@@ -120,12 +120,12 @@ public final class ClipboardMonitor {
     }
 
     private func nonEmpty(_ s: String?) -> String? {
-        guard let s = s, !s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+        guard let s, !s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
         return s
     }
 
     private func capped(_ data: Data?) -> Data? {
-        guard let data = data else { return nil }
+        guard let data else { return nil }
         return data.count <= maxImageBytes ? data : nil
     }
 }

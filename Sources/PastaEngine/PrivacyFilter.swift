@@ -21,7 +21,7 @@ public struct PrivacyFilter {
     public func shouldSkip(types: [String]) -> Bool {
         let set = Set(types)
         if !PrivacyFilter.alwaysSkip.isDisjoint(with: set) { return true }
-        if ignorePasswords && set.contains(PasteboardType.concealed) { return true }
+        if ignorePasswords, set.contains(PasteboardType.concealed) { return true }
         return false
     }
 }

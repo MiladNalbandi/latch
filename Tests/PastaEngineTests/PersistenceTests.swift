@@ -52,7 +52,7 @@ final class PersistenceTests: XCTestCase {
         XCTAssertTrue(p.load().isEmpty)   // no crash, empty
     }
 
-    func testFlushWritesPendingImmediately() throws {
+    func testFlushWritesPendingImmediately() {
         let p = makePersistence()
         p.save([ClipItem.text("x")])
         p.flush()

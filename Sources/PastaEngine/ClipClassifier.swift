@@ -20,8 +20,8 @@ public struct ClipClassifier {
             || typeSet.contains(PasteboardType.png)
             || types.contains { $0.hasPrefix("public.image") }
 
-        if hasFile && !hasText { return .file }
-        if hasImage && !hasText { return .image }
+        if hasFile, !hasText { return .file }
+        if hasImage, !hasText { return .image }
         if hasText {
             if ClipClassifier.isColor(trimmed) { return .color }
             if ClipClassifier.isSingleURL(trimmed) { return .link }
@@ -35,32 +35,25 @@ public struct ClipClassifier {
     // MARK: - Heuristics
 
     static func isColor(_ s: String) -> Bool {
-        if let hex = try? NSRegularExpression(pattern: "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"),
-           hex.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)) != nil {
-            return true
-        }
-        if let rgb = try? NSRegularExpression(pattern: "^rgba?\\([0-9.,%\\s]+\\)$", options: [.caseInsensitive]),
-           rgb.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)) != nil {
-            return true
-        }
-        return false
+        matchesWhole(s, "^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$")
+            || matchesWhole(s, "^rgba?\\([0-9.,%\\s]+\\)$")
     }
 
     static func isSingleURL(_ s: String) -> Bool {
         // No internal whitespace, single token.
         guard !s.contains(where: { $0 == " " || $0 == "\n" || $0 == "\t" }) else { return false }
         if s.lowercased().hasPrefix("mailto:") { return true }
-        if let url = URL(string: s), let scheme = url.scheme,
-           (scheme == "http" || scheme == "https"), url.host != nil {
+        if let url = URL(string: s), let scheme = url.scheme, scheme == "http" || scheme == "https", url.host != nil {
             return true
         }
         // Bare domain like example.com/path
-        if let bare = try? NSRegularExpression(
-            pattern: "^[a-z0-9.-]+\\.[a-z]{2,}(/\\S*)?$", options: [.caseInsensitive]),
-           bare.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)) != nil {
-            return true
-        }
-        return false
+        return matchesWhole(s, "^[a-z0-9.-]+\\.[a-z]{2,}(/\\S*)?$")
+    }
+
+    /// Whole-string, case-insensitive regex match.
+    private static func matchesWhole(_ s: String, _ pattern: String) -> Bool {
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) else { return false }
+        return regex.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)) != nil
     }
 
     func looksLikeCode(_ s: String, source: String?) -> Bool {

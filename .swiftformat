@@ -12,6 +12,7 @@
 
 --swiftversion 5.9
 --indent 4
+--ifdef no-indent          # top-level `#if canImport(...)` bodies stay flush-left
 
 # Preserve author layout for these (don't reflow what we can't usefully auto-improve).
 --funcattributes preserve
@@ -20,6 +21,7 @@
 --wrapparameters preserve
 --wrapcollections preserve
 --marktypes never
+--ranges no-space          # 1...10, not 1 ... 10
 
 # Relaxed subjective-layout rules (see philosophy above).
 --disable redundantReturn
@@ -37,6 +39,11 @@
 --disable trailingCommas
 --disable wrap
 --disable wrapMultilineStatementBraces
+--disable wrapArguments              # preserve author's manual argument wrapping
+--disable opaqueGenericParameters    # generic <C: View> helpers read clearer here
+--disable conditionalAssignment      # allow explicit if/else assignment
+--disable wrapLoopBodies             # allow compact single-line loop bodies in tests
+--disable noForceUnwrapInTests       # force-unwrap is acceptable in test fixtures
 
 # Excludes (third-party reference + generated output).
 --exclude .build,DerivedData,design,Pods
