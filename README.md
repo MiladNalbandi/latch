@@ -15,6 +15,26 @@ everything **encrypted** on-device.
 v0.1 in development. The product is named **Latch** and adopts the **Latch** design
 system (`design/`) as its visual identity.
 
+## Download
+
+Prebuilt `.dmg` builds are published on the repo's
+[**Releases**](../../releases) page. Download the latest `Latch-<version>.dmg`, open it, and
+drag **Latch** into **Applications**. The build is unsigned (early testers): on first launch
+right-click **Latch.app → Open**; if macOS calls it "damaged", run
+`xattr -dr com.apple.quarantine /Applications/Latch.app`. Requires macOS 13+ (universal —
+Apple Silicon + Intel).
+
+## Pipeline
+
+- **CI** (`.github/workflows/ci.yml`) — on every push/PR: build + engine tests + lint
+  (SwiftFormat/SwiftLint), all on `macos-15`.
+- **Release** (`.github/workflows/release.yml`) — on a `v*` tag (or manual dispatch): builds
+  a universal Release `Latch.app`, ad-hoc signs it, packages a `.dmg` (with a `.sha256`),
+  and publishes a GitHub Release with the DMG attached. Cut a release with:
+  ```sh
+  git tag v0.1.0 && git push origin v0.1.0
+  ```
+
 ## Build & run (macOS)
 
 Requires a Mac with Xcode and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
