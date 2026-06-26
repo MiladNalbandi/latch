@@ -1,0 +1,45 @@
+import XCTest
+@testable import PastaEngine
+
+final class PreferencesTests: XCTestCase {
+    private func makeDefaults() -> UserDefaults {
+        let suite = "pasta.tests." + UUID().uuidString
+        return UserDefaults(suiteName: suite)!
+    }
+
+    func testDefaultsWhenUnset() {
+        let p = Preferences(defaults: makeDefaults())
+        XCTAssertEqual(p.historyCap, Preferences.defaultCap)
+        XCTAssertEqual(p.pollInterval, Preferences.defaultInterval, accuracy: 0.0001)
+        XCTAssertFalse(p.soundOnCopy)
+        XCTAssertTrue(p.showCountInMenuBar)
+        XCTAssertTrue(p.ignorePasswords)
+        XCTAssertEqual(p.accentKey, Preferences.defaultAccentKey)
+    }
+
+    func testCapClamps() {
+        let p = Preferences(defaults: makeDefaults())
+        p.historyCap = 99999
+        XCTAssertEqual(p.historyCap, Preferences.capRange.upperBound)
+        p.historyCap = 1
+        XCTAssertEqual(p.historyCap, Preferences.capRange.lowerBound)
+    }
+
+    func testIntervalClamps() {
+        let p = Preferences(defaults: makeDefaults())
+        p.pollInterval = 10
+        XCTAssertEqual(p.pollInterval, Preferences.intervalRange.upperBound, accuracy: 0.0001)
+        p.pollInterval = 0.01
+        XCTAssertEqual(p.pollInterval, Preferences.intervalRange.lowerBound, accuracy: 0.0001)
+    }
+
+    func testBoolRoundTrip() {
+        let defaults = makeDefaults()
+        let p = Preferences(defaults: defaults)
+        p.soundOnCopy = true
+        p.incognito = true
+        let p2 = Preferences(defaults: defaults)
+        XCTAssertTrue(p2.soundOnCopy)
+        XCTAssertTrue(p2.incognito)
+    }
+}

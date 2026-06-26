@@ -1,0 +1,87 @@
+import Foundation
+import Combine
+
+/// In-memory authority for clipboard history: dedupe, pinned-first ordering, cap
+/// enforcement (pinned-safe), and persistence orchestration.
+/// See specs/03-history-store and /13-pinning-lifecycle.
+@MainActor
+public final class HistoryStore: ObservableObject {
+    @Published public private(set) var items: [ClipItem] = []
+
+    private let persistence: HistoryPersisting
+    private var cap: Int
+
+    public init(persistence: HistoryPersisting, cap: Int) {
+        self.persistence = persistence
+        self.cap = max(1, cap)
+    }
+
+    public func load() {
+        items = persistence.load()
+        sortItems()
+        enforceCap()
+    }
+
+    // MARK: - Mutations
+
+    public func add(_ item: ClipItem) {
+        if let idx = items.firstIndex(where: { $0.contentHash == item.contentHash }) {
+            // Dedupe: bump recency and preserve pin state; move to top.
+            var existing = items.remove(at: idx)
+            existing.createdAt = item.createdAt
+            items.append(existing)
+        } else {
+            items.append(item)
+        }
+        sortItems()
+        enforceCap()
+        persistence.save(items)
+    }
+
+    public func togglePin(id: UUID) {
+        guard let idx = items.firstIndex(where: { $0.id == id }) else { return }
+        items[idx].pinned.toggle()
+        sortItems()
+        persistence.save(items)
+    }
+
+    public func remove(id: UUID) {
+        let before = items.count
+        items.removeAll { $0.id == id }
+        if items.count != before { persistence.save(items) }
+    }
+
+    public func clear() {
+        guard !items.isEmpty else { return }
+        items.removeAll()
+        persistence.save(items)
+    }
+
+    public func setCap(_ newCap: Int) {
+        cap = max(1, newCap)
+        enforceCap()
+        persistence.save(items)
+    }
+
+    public func flush() {
+        persistence.flush()
+    }
+
+    // MARK: - Ordering & cap
+
+    /// Pinned first, then most-recent first.
+    private func sortItems() {
+        items.sort { a, b in
+            if a.pinned != b.pinned { return a.pinned && !b.pinned }
+            return a.createdAt > b.createdAt
+        }
+    }
+
+    /// Evict only the oldest *unpinned* items beyond the cap; pinned items are kept.
+    private func enforceCap() {
+        let unpinned = items.filter { !$0.pinned }
+        guard unpinned.count > cap else { return }
+        let removable = Set(unpinned.suffix(unpinned.count - cap).map(\.id))
+        items.removeAll { removable.contains($0.id) }
+    }
+}
