@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   build-test:
-    runs-on: macos-14
+    runs-on: macos-15   # Xcode 16.x — matches the project format XcodeGen 2.45+ emits
     steps:
       - uses: actions/checkout@v4
 
@@ -49,3 +49,19 @@ jobs:
             -destination 'platform=macOS' \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             test
+
+  lint:
+    runs-on: macos-15
+    # Non-blocking for now while the build is stabilized; flip to blocking once green.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: brew install swiftlint swiftformat
+
+      - name: SwiftFormat (lint mode)
+        run: swiftformat --lint .
+
+      - name: SwiftLint
+        run: swiftlint lint --reporter github-actions-logging

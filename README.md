@@ -52,5 +52,17 @@ design/                the Latch design system reference (tokens, components, ki
 ## Architecture
 
 `PastaApp` (UI) depends on `PastaEngine` (core); the engine never imports UI.
-`NSPasteboard`/`NSWorkspace` are hidden behind protocols so the logic is unit-testable
-with fakes. See `specs/README.md` for the full breakdown.
+`NSPasteboard`/`NSWorkspace`/Keychain are hidden behind protocols so the logic is
+unit-testable with fakes.
+
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) — layering, boundaries, data flow, conventions.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — local setup, `make` commands, quality gates.
+- [`specs/README.md`](specs/README.md) — per-feature requirements / design / tasks.
+
+## Quality gates
+
+```sh
+make check     # format-check + lint + build + test (run before pushing)
+```
+
+CI (`.github/workflows/ci.yml`) builds + tests on `macos-15` and runs SwiftFormat/SwiftLint.

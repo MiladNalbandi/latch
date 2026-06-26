@@ -1,0 +1,83 @@
+# SwiftLint configuration for pasta.
+# Run locally: `make lint` (requires `brew install swiftlint`).
+
+included:
+  - Sources
+  - Tests
+
+excluded:
+  - .build
+  - DerivedData
+  - design          # third-party design-system reference (JS/CSS), not our Swift
+  - "**/*.generated.swift"
+
+# Opt-in rules that catch real smells without being noisy.
+opt_in_rules:
+  - empty_count
+  - empty_string
+  - first_where
+  - contains_over_first_not_nil
+  - last_where
+  - sorted_first_last
+  - redundant_nil_coalescing
+  - toggle_bool
+  - unused_optional_binding
+  - explicit_init
+  - closure_spacing
+  - operator_usage_whitespace
+  - overridden_super_call
+  - prohibited_super_call
+  - fatal_error_message
+  - vertical_whitespace_closing_braces
+  - yoda_condition
+
+disabled_rules:
+  - todo                 # we intentionally track follow-ups in specs, not as failures
+  - trailing_comma       # SwiftFormat owns comma style
+
+line_length:
+  warning: 120
+  error: 160
+  ignores_comments: true
+  ignores_urls: true
+
+type_body_length:
+  warning: 300
+  error: 450
+
+file_length:
+  warning: 500
+  error: 700
+  ignore_comment_only_lines: true
+
+function_body_length:
+  warning: 70
+  error: 120
+
+cyclomatic_complexity:
+  warning: 12
+  error: 20
+
+identifier_name:
+  min_length: 2          # allow short, conventional names like `vm`, `id`, `x`
+  excluded:
+    - id
+    - vm
+    - x
+    - y
+    - r
+    - g
+    - b
+    - q
+    - c
+    - s
+    - t
+
+type_name:
+  min_length: 3
+  max_length: 45
+
+nesting:
+  type_level: 2
+
+reporter: "xcode"
