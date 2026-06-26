@@ -40,8 +40,27 @@ mechanic proven in the Phase 0 spike.
 - **01-AC-10.** THE SYSTEM SHALL compute a `contentHash` and a display `preview` for each
   captured `ClipItem` (used downstream for dedupe and UI).
 
+## v0.1 (Latch) addendum — additional acceptance criteria
+
+- **01-AC-11.** WHEN a new entry contains image data (`public.tiff`/`public.png`) and no
+  usable text, THE SYSTEM SHALL capture the image (stored as PNG, large images downscaled
+  to a preview thumbnail) into the `ClipItem`.
+- **01-AC-12.** WHEN a new entry contains a file URL (`public.file-url`), THE SYSTEM SHALL
+  capture the file reference (path + display name).
+- **01-AC-13.** WHEN capturing, THE SYSTEM SHALL record the **source app** name via
+  `SourceProvider` (`NSWorkspace.shared.frontmostApplication?.localizedName`) into
+  `ClipItem.source`.
+- **01-AC-14.** WHEN capturing, THE SYSTEM SHALL set `ClipItem.type` via `ClipClassifier`
+  (feature 12) from the text/types/source.
+- **01-AC-15.** WHILE incognito/paused (feature 13), THE SYSTEM SHALL not capture; see
+  13-AC-5/6.
+
+> `SourceProvider` is a protocol (`currentSourceName() -> String?`) with a `SystemWorkspace`
+> impl, kept injectable for tests. Image/file capture extends `ClipItem` with `imageData`
+> and `fileURL` (feature 03 data model).
+
 ## Out of scope
 
 - Privacy filtering of concealed/transient types (feature 02 consumes the captured types).
 - Storage, dedupe, and cap (feature 03).
-- Images, files, and other rich types (post-MVP).
+- Rich link unfurling / OCR (post-v0.1).

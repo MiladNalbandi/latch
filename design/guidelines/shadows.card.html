@@ -1,0 +1,24 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Elevation & Shadows" subtitle="Soft warm-neutral layering · sm → panel" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-100); padding: 24px; }
+  .row { display: flex; gap: 22px; align-items: center; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+  .box { width: 92px; height: 64px; background: var(--paper-0); border-radius: var(--radius-card); display: grid; place-items: center; }
+  .box span { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-sm)"><span>sm</span></div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-md)"><span>md</span></div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-lg)"><span>lg</span></div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-xl)"><span>xl</span></div></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-panel)"><span>panel</span></div></div>
+  </div>
+</body>
+</html>

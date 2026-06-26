@@ -1,0 +1,37 @@
+<!-- @dsCard group="Brand" viewport="700x200" name="Glass Materials" subtitle="macOS-style vibrancy: light, content & ink" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); padding: 22px;
+    background:
+      radial-gradient(40% 60% at 10% 10%, rgba(242,165,44,0.5), transparent 55%),
+      radial-gradient(45% 55% at 95% 20%, rgba(47,111,237,0.45), transparent 60%),
+      radial-gradient(120% 120% at 80% 100%, #1fae84, #0a5466);
+  }
+  .row { display: flex; gap: 16px; }
+  .pane {
+    flex: 1; height: 130px; border-radius: var(--radius-lg); padding: 14px 16px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    border: 0.5px solid var(--glass-border); box-shadow: var(--glass-highlight), var(--shadow-lg);
+    backdrop-filter: blur(var(--blur-thick)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--blur-thick)) saturate(var(--glass-saturate));
+  }
+  .pane b { font-size: 13px; color: var(--ink-900); }
+  .pane span { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+  .p1 { background: var(--glass-strong); }
+  .p2 { background: var(--glass-content); }
+  .ink { background: var(--glass-ink-strong); border-color: var(--glass-border-ink); box-shadow: var(--glass-highlight-ink), var(--shadow-lg); }
+  .ink b { color: #fff; } .ink span { color: rgba(255,255,255,0.6); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="pane p1"><b>Popover glass</b><span>--glass-strong · blur 50</span></div>
+    <div class="pane p2"><b>Detail pane</b><span>--glass-content</span></div>
+    <div class="pane ink"><b>HUD / menu bar</b><span>--glass-ink-strong</span></div>
+  </div>
+</body>
+</html>

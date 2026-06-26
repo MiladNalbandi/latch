@@ -1,12 +1,78 @@
-# 08 — History Window — Design
+# 08 — History Panel — Design
 
-## Files
+> Reworked for the Latch two-pane design. Reference:
+> `/design/ui_kits/app/LatchPanel.jsx` + `/design/ui_kits/app/index.html` (`.lp*` CSS).
+
+## Files (v0.1 Latch)
 
 ```
-Sources/PastaApp/HistoryWindowController.swift   # NSPanel host + show/hide/toggle
-Sources/PastaApp/HistoryViewModel.swift          # filtering + selection + copy-back
-Sources/PastaApp/HistoryListView.swift           # SwiftUI search + list + key handling
+Sources/PastaApp/HistoryPanelController.swift   # frosted NSPanel host + show/hide/toggle
+Sources/PastaApp/HistoryViewModel.swift         # query + filter chip + selection + actions
+Sources/PastaApp/HistoryPanel.swift             # SwiftUI: header + FilterBar + list + PreviewPane + footer
+Sources/PastaApp/FilterBar.swift                # chip row
+Sources/PastaApp/PreviewPane.swift              # right-hand preview + actions
+// ClipRow lives in DesignSystem (feature 11)
 ```
+
+### Layout (from .lp CSS)
+- Panel: 720px; `VisualEffectView(.hudWindow)` + paper tint; `Radius.panel`; `Shadow.panel`.
+- Header: padding 12/14/10; `PSearchField` (40px tall) + `PBadge(tone:.secure, dot:true)`
+  "Local only" + `PIconButton(gear)` → settings.
+- `FilterBar`: chips, fully-round; selected = white chip + accent-press text + `Shadow.sm`.
+- Body: `HStack`, height ~366; left list pane width 322 (scroll, padding 6, right hairline);
+  right `PreviewPane` (flex, padding 18/20).
+- Footer: dark glass (`VisualEffectView(.underWindowBackground)` tinted ink), `PKbd(tone:.ink)`
+  hints.
+- Toast: pill, dark glass, bottom-center, spring-in, auto-dismiss ~1.4s.
+
+## HistoryViewModel
+
+```swift
+@MainActor final class HistoryViewModel: ObservableObject {
+    @Published var query = "" { didSet { recompute() } }
+    @Published var filter: ClipFilter = .all { didSet { recompute() } }
+    @Published private(set) var results: [ClipItem] = []
+    @Published var selectionIndex = 0
+    @Published var toast: String? = nil
+
+    enum ClipFilter { case all, pinned, link, text, code, color }   // chips (08-AC-4)
+
+    init(store: HistoryStore, matcher: FuzzyMatcher, pasteboard: PasteboardWriting)
+    func recompute()             // narrow by filter -> fuzzy(query over content+source) -> pinned-first
+    func moveSelection(by:Int)   // clamp (08-AC-7)
+    func activate(index:Int?)    // copy-back selected/Nth + hide + toast (08-AC-8/10/14)
+    func pasteSelected() -> Bool
+    func deleteSelected()        // store.remove + reselect neighbor (08-AC-9)
+    func togglePinSelected()     // store.togglePin
+    func resetForShow()          // query="", filter=.all, selection=0, focus search (08-AC-2)
+}
+```
+
+## HistoryPanelController
+
+```swift
+@MainActor final class HistoryPanelController {
+    private let panel: NSPanel              // borderless .nonactivatingPanel, level .floating,
+                                            // isFloatingPanel, hidesOnDeactivate, all-spaces
+    func show()    // resetForShow; center-top; NSApp.activate; makeKey; focus search (08-AC-1/2/13)
+    func hide()    // orderOut (08-AC-11)
+    func toggle()  // visible ? hide : show (08-AC-13)
+}
+```
+
+## Keyboard handling (macOS 13 floor)
+
+A panel-scoped `NSEvent.addLocalMonitorForEvents(matching: .keyDown)` (added on show,
+removed on hide): ↑/↓ → moveSelection; Return → activate(nil); ⌘+Delete → deleteSelected;
+Esc → hide; digits 1–9 → activate(n-1). Character keys fall through to the search field.
+
+## Copy-back & dedupe (08-AC-8/14)
+
+`pasteSelected` → `pasteboard.write(...)` (text+RTF, or image/file). The write bumps
+`changeCount`; the monitor captures it; `HistoryStore.add` dedupes by `contentHash`, moving
+it to the top. (While the panel is the foreground action, that's intended.)
+
+## Reference dimensions / styling — original single-pane notes (superseded)
 
 ## HistoryViewModel
 

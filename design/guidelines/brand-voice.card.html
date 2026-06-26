@@ -1,0 +1,36 @@
+<!-- @dsCard group="Brand" viewport="700x180" name="Voice" subtitle="Friendly, plain, quietly reassuring" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-50); padding: 20px 24px; color: var(--ink-900); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .h { font-size: 11px; font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; margin: 0 0 10px; }
+  .yes .h { color: var(--green-600); }
+  .no .h { color: var(--red-500); }
+  .line { font-size: 14px; line-height: 1.45; margin: 0 0 7px; display: flex; gap: 8px; }
+  .line i { font-style: normal; }
+  .yes i { color: var(--green-500); }
+  .no i { color: var(--red-500); }
+  .no .line span { color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="cols">
+    <div class="yes">
+      <p class="h">We say</p>
+      <p class="line"><i>✓</i><span>"Copied. It's in your history."</span></p>
+      <p class="line"><i>✓</i><span>"Nothing leaves your Mac."</span></p>
+      <p class="line"><i>✓</i><span>"Hit ⌘⇧V to bring it back."</span></p>
+    </div>
+    <div class="no">
+      <p class="h">We don't</p>
+      <p class="line"><i>✕</i><span>"Operation completed successfully."</span></p>
+      <p class="line"><i>✕</i><span>"Military-grade encryption!!!"</span></p>
+      <p class="line"><i>✕</i><span>"Leverage your clipboard workflow."</span></p>
+    </div>
+  </div>
+</body>
+</html>

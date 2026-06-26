@@ -1,0 +1,37 @@
+/* Latch — Typography tokens
+   Display: Bricolage Grotesque  ·  UI/Body: Hanken Grotesk  ·  Mono: JetBrains Mono */
+:root {
+  --font-display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --font-sans:    "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale (1.20 minor-third-ish, tuned) */
+  --text-2xs: 11px;
+  --text-xs:  12px;
+  --text-sm:  13px;
+  --text-md:  15px;   /* base UI */
+  --text-lg:  17px;
+  --text-xl:  20px;
+  --text-2xl: 25px;
+  --text-3xl: 32px;
+  --text-4xl: 42px;
+  --text-5xl: 56px;
+  --text-6xl: 72px;
+
+  --leading-tight: 1.1;
+  --leading-snug:  1.25;
+  --leading-normal:1.5;
+  --leading-relaxed: 1.65;
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold:600;
+  --weight-bold:    700;
+  --weight-extra:   800;
+
+  --tracking-tight: -0.02em;
+  --tracking-snug:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:  0.04em;
+  --tracking-caps:  0.08em;  /* eyebrows / overlines */
+}

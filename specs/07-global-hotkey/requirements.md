@@ -29,9 +29,16 @@ Preferences (feature 09) and persisted by the library.
 - **07-AC-6.** THE SYSTEM SHALL register the shortcut handler once, at launch, via the
   `HotkeyManager`.
 
+## v0.1 (Latch) addendum — quick-paste
+
+- **07-AC-7.** THE SYSTEM SHALL define a second shortcut
+  `KeyboardShortcuts.Name.quickPaste` (default ⌘⌥V).
+- **07-AC-8.** WHEN `quickPaste` is pressed, THE SYSTEM SHALL copy the most-recent history
+  item back to the clipboard **without** opening the panel (copy-back semantics; the user
+  presses ⌘V). IF history is empty, THEN it SHALL do nothing.
+
 ## Out of scope
 
-- Multiple independent hotkeys (only one toggle shortcut for MVP).
-- Per-action shortcuts (e.g. a separate "clear history" hotkey).
-- Building a custom recorder UI (the library provides `KeyboardShortcuts.Recorder`, used
-  in feature 09).
+- More than these two shortcuts.
+- Auto-paste/synthesized ⌘V (copy-back only for v0.1).
+- Building a custom recorder UI (`KeyboardShortcuts.Recorder` is used in feature 09).

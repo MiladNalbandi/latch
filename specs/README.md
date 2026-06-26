@@ -1,8 +1,9 @@
-# pasta — Specifications (MVP v0.1)
+# pasta — Specifications (v0.1)
 
-`pasta` is a macOS menu-bar clipboard-history manager. This directory holds the
-**spec-driven development** artifacts for MVP v0.1. Every feature has its own folder
-with three files:
+`pasta` is a macOS menu-bar clipboard-history manager. The product is **named "pasta"**
+but adopts the **"Latch" design system** (`/design`) as its visual + UX identity: a warm,
+private, Spotlight-style clipboard. This directory holds the **spec-driven development**
+artifacts. Every feature has its own folder with three files:
 
 - **requirements.md** — user stories + acceptance criteria in [EARS](#ears-format) style.
 - **design.md** — types, signatures, data flow, file paths, and edge cases.
@@ -24,9 +25,12 @@ double as the manual-QA / unit-test checklist that runs on a Mac.
 | 05 | Fuzzy search         | `05-fuzzy-search/`           | Subsequence scoring + filter over history                     |
 | 06 | Menu bar             | `06-menu-bar/`               | `NSStatusItem` presence + menu, agent (no Dock) app           |
 | 07 | Global hotkey        | `07-global-hotkey/`          | KeyboardShortcuts summon / toggle window                      |
-| 08 | History window       | `08-history-window/`         | SwiftUI panel: search + keyboard nav + copy-back              |
-| 09 | Preferences          | `09-preferences/`            | History size, poll interval, hotkey recorder, login toggle    |
+| 08 | History panel        | `08-history-window/`         | Frosted 720px two-pane panel: search, filter chips, preview, actions |
+| 09 | Settings             | `09-preferences/`            | Tabbed window (General / Privacy): accent, shortcuts, privacy, cap |
 | 10 | Launch at login      | `10-launch-at-login/`        | `SMAppService` register / unregister + toggle                 |
+| 11 | Design system        | `11-design-system/`          | Latch tokens → SwiftUI + reusable components                  |
+| 12 | Type detection       | `12-type-detection/`         | Classify clips: text / link / code / color / image / file     |
+| 13 | Pinning & lifecycle  | `13-pinning-lifecycle/`      | Pin items; clear-on-lock; incognito pause                     |
 
 ## Glossary
 
@@ -57,14 +61,19 @@ PastaApp (AppKit + SwiftUI UI)  ──depends on──▶  PastaEngine (core log
   and persistence logic can be unit-tested against fakes.
 
 ```
-Sources/PastaEngine/   ClipItem, PasteboardReading, SystemPasteboard, PrivacyFilter,
-                       ClipboardMonitor, HistoryPersisting (+ JSONHistoryPersistence),
+Sources/PastaEngine/   ClipItem, ClipType, PasteboardReading, SystemPasteboard,
+                       SourceProvider, ClipClassifier, PrivacyFilter, ClipboardMonitor,
+                       HistoryPersisting (+ EncryptedJSONPersistence), CryptoBox,
                        HistoryStore, FuzzyMatcher, Preferences
-Sources/PastaApp/      AppDelegate, StatusItemController, HotkeyManager,
-                       LoginItemManager, HistoryWindow, HistoryViewModel,
-                       HistoryListView, PreferencesView, Resources/pasta.entitlements
-Tests/PastaEngineTests/  PrivacyFilterTests, FuzzyMatcherTests, HistoryStoreTests,
-                         PersistenceTests, ClipboardMonitorTests
+Sources/PastaApp/      AppDelegate, StatusItemController, HotkeyManager, LoginItemManager,
+                       LockMonitor, HistoryPanelController, HistoryViewModel, HistoryPanel,
+                       ClipRow, PreviewPane, FilterBar, SettingsWindowController,
+                       SettingsView, DesignSystem/* (Palette, Typography, Metrics,
+                       PBadge, PKbd, PButton, PIconButton, PSearchField, PSwitch, PCard),
+                       Resources/pasta.entitlements
+Tests/PastaEngineTests/  ClassifierTests, PrivacyFilterTests, FuzzyMatcherTests,
+                         HistoryStoreTests, CryptoBoxTests, PersistenceTests,
+                         ClipboardMonitorTests
 ```
 
 ## Non-functional requirements (NFR)
@@ -72,8 +81,15 @@ Tests/PastaEngineTests/  PrivacyFilterTests, FuzzyMatcherTests, HistoryStoreTest
 - **NFR-1 Platform.** macOS 13.0 (Ventura) minimum deployment target.
 - **NFR-2 Privacy first.** Clipboard content never leaves the machine. No network calls,
   analytics, or telemetry. Content marked concealed/transient is never stored or persisted.
+  iCloud sync is explicitly out of scope for v0.1 (Settings shows it disabled / "Coming
+  soon").
 - **NFR-3 Persistence.** History survives app quit/relaunch and machine restart, stored
-  locally at `~/Library/Application Support/pasta/history.json`.
+  locally **encrypted** at `~/Library/Application Support/pasta/history.dat` (AES-GCM; key
+  in the login Keychain — see feature 04).
+- **NFR-9 Design fidelity.** The UI matches the Latch design system in `/design` (warm
+  paper canvas, Latch green `#12A877`, frosted-glass floating panel, soft radii, keycap
+  motif, spring motion). Tokens and components are centralized (feature 11), not hard-coded
+  per view.
 - **NFR-4 Responsiveness.** Polling and UI work must not block the main thread; the
   history window opens in well under a second for a full (capped) history.
 - **NFR-5 Footprint.** Single third-party dependency

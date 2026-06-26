@@ -1,39 +1,55 @@
-# 09 — Preferences — Requirements
+# 09 — Settings — Requirements
 
 ## Overview
 
-A minimal preferences window letting the user configure history size, poll interval, the
-global hotkey, and launch-at-login. Settings apply live and persist via `UserDefaults`.
+A macOS-style **tabbed** settings window matching the Latch design
+(`/design/ui_kits/app/LatchSettings.jsx`): **General** and **Privacy** tabs (a **Sync** tab
+is shown disabled / "Coming soon" — iCloud is out of scope for v0.1). Settings apply live and
+persist via `UserDefaults`.
 
 ## User stories
 
-- **US-1.** As a user, I want to choose how many items pasta remembers.
-- **US-2.** As a user, I want to tune how often pasta checks the clipboard.
-- **US-3.** As a user, I want to set my summon hotkey from a recorder control.
-- **US-4.** As a user, I want to toggle whether pasta starts at login.
+- **US-1.** As a user, I want a familiar Settings window to tune pasta.
+- **US-2.** As a user, I want to set the accent color, shortcuts, and startup behavior.
+- **US-3.** As a privacy-conscious user, I want clear controls for what's captured and the
+  ability to clear everything.
 
 ## Acceptance criteria (EARS)
 
-- **09-AC-1.** THE SYSTEM SHALL provide a preferences window opened from the status menu
-  "Preferences…" item (feature 06).
-- **09-AC-2.** THE SYSTEM SHALL present a control to set the history size (`historyCap`)
-  within a sane range (e.g. 10–1000), defaulting to 200.
-- **09-AC-3.** WHEN the history size changes, THE SYSTEM SHALL persist it and apply it live
-  via `HistoryStore.setCap(_:)` (immediate eviction if lowered).
-- **09-AC-4.** THE SYSTEM SHALL present a control to set the poll interval (e.g.
-  0.2s–2.0s), defaulting to 0.5s.
-- **09-AC-5.** WHEN the poll interval changes, THE SYSTEM SHALL persist it and apply it
-  live via `ClipboardMonitor.setInterval(_:)`.
-- **09-AC-6.** THE SYSTEM SHALL present a `KeyboardShortcuts.Recorder` bound to
-  `.toggleWindow` for setting the global hotkey (feature 07).
-- **09-AC-7.** THE SYSTEM SHALL present a launch-at-login toggle reflecting and updating
-  the login-item state (feature 10).
-- **09-AC-8.** THE SYSTEM SHALL persist `historyCap` and `pollInterval` in `UserDefaults`
-  and load them on launch, applying defaults when unset.
-- **09-AC-9.** THE SYSTEM SHALL validate inputs and clamp out-of-range values to the
-  allowed bounds rather than accepting invalid settings.
+### Window
+- **09-AC-1.** THE SYSTEM SHALL provide a titled "pasta Settings" window opened from the
+  status menu and the panel's gear button, with tabs **General**, **Privacy**, and a
+  disabled **Sync** ("Coming soon"). Single instance; re-open brings it to front.
+
+### General
+- **09-AC-2.** THE SYSTEM SHALL present an **accent color** picker (system-accent swatches +
+  Latch green default) that recolors the UI live via `AccentStore` (feature 11).
+- **09-AC-3.** THE SYSTEM SHALL present a **Launch at login** switch (feature 10).
+- **09-AC-4.** THE SYSTEM SHALL present a **Play a sound on copy** switch (default off);
+  WHEN on, a soft system sound plays on each capture.
+- **09-AC-5.** THE SYSTEM SHALL present a **Show item count in menu bar** switch (feature 06).
+- **09-AC-6.** THE SYSTEM SHALL present the two shortcuts as recorders/keycaps: "Open
+  clipboard history" (⌘⇧V) and "Quick-paste recent" (⌘⌥V) (features 07).
+
+### Privacy
+- **09-AC-7.** THE SYSTEM SHALL show a reassuring privacy banner ("Your clipboard never
+  leaves this Mac…").
+- **09-AC-8.** THE SYSTEM SHALL present **Ignore passwords** (concealed types; default on,
+  feature 02), **Clear history when Mac locks** (feature 13), and **Pause capture
+  (incognito)** (feature 13) switches.
+- **09-AC-9.** THE SYSTEM SHALL present a **history size** control (keep last N; range
+  10–1000, default 200) that applies live via `HistoryStore.setCap` (feature 03).
+- **09-AC-10.** THE SYSTEM SHALL present a **Clear all history…** danger button that empties
+  the store (with a confirm).
+
+### General behavior
+- **09-AC-11.** THE SYSTEM SHALL persist all settings in `UserDefaults`, load on launch, and
+  apply defaults when unset; the global hotkeys persist via KeyboardShortcuts.
+- **09-AC-12.** THE SYSTEM SHALL validate/clamp numeric inputs to allowed ranges.
+- **09-AC-13.** Poll interval MAY be exposed as an advanced control (range 0.2–2.0s, default
+  0.5) applied live via `ClipboardMonitor.setInterval` (feature 01).
 
 ## Out of scope
 
-- Themes/appearance, export/import of history, advanced privacy rules (post-MVP).
-- A full settings scene with multiple tabs (single pane suffices for MVP).
+- iCloud sync configuration (Sync tab is a disabled placeholder).
+- Themes beyond accent color; import/export of history.

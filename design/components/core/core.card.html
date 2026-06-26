@@ -1,0 +1,66 @@
+<!-- @dsCard group="Components" viewport="700x520" name="Core Primitives" subtitle="Button · IconButton · Input · Switch · Kbd · Badge · Card" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-50); padding: 22px; }
+  .root { display: flex; flex-direction: column; gap: 18px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .lbl { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); width: 100%; margin-bottom: -4px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+  const { Button, IconButton, Input, Switch, Kbd, Badge, Card } = window.LatchDesignSystem_fe0ecb;
+  const Plus = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>;
+  const Search = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>;
+  const Star = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="m12 3 2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 22l-5.3-2.8 1-5.8L3.5 9.2l5.9-.9L12 3z"/></svg>;
+  function Demo() {
+    const [on, setOn] = React.useState(true);
+    return (
+      <div className="root">
+        <div className="row"><span className="lbl">Buttons</span>
+          <Button>Save snippet</Button>
+          <Button variant="secondary" iconLeft={<Plus/>}>New</Button>
+          <Button variant="ghost">Cancel</Button>
+          <Button variant="secure">Unlock</Button>
+          <Button variant="danger">Clear all</Button>
+          <Button size="sm">Small</Button>
+          <Button disabled>Disabled</Button>
+        </div>
+        <div className="row"><span className="lbl">Icon buttons · inputs · switch</span>
+          <IconButton variant="solid" label="New"><Plus/></IconButton>
+          <IconButton variant="outline" label="Search"><Search/></IconButton>
+          <IconButton label="Favorite" active><Star/></IconButton>
+          <div style={{width:190}}><Input search iconLeft={<Search/>} placeholder="Search history…" /></div>
+          <Switch checked={on} onChange={setOn} label="Sync" />
+        </div>
+        <div className="row"><span className="lbl">Keycaps & badges</span>
+          <Kbd keys="cmd+shift+V" />
+          <Kbd keys={["cmd","V"]} tone="go" size="lg" />
+          <Kbd keys="esc" />
+          <span style={{width:8}}></span>
+          <Badge tone="secure" dot>Local only</Badge>
+          <Badge tone="primary">Pinned</Badge>
+          <Badge tone="accent">Link</Badge>
+          <Badge tone="warning">Password</Badge>
+        </div>
+        <div className="row" style={{alignItems:'stretch'}}><span className="lbl">Cards</span>
+          <Card style={{flex:1}}><b style={{fontSize:14}}>Default</b><div style={{fontSize:13,color:'var(--text-muted)',marginTop:4}}>Paper surface, hairline border.</div></Card>
+          <Card variant="raised" interactive style={{flex:1}}><b style={{fontSize:14}}>Raised · interactive</b><div style={{fontSize:13,color:'var(--text-muted)',marginTop:4}}>Hover to lift.</div></Card>
+          <Card variant="ink" style={{flex:1}}><b style={{fontSize:14}}>Ink</b><div style={{fontSize:13,color:'var(--text-on-ink-muted)',marginTop:4}}>Dark panel chrome.</div></Card>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

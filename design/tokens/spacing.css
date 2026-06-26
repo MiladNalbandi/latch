@@ -1,0 +1,30 @@
+/* Latch — Spacing tokens. 4px base grid. */
+:root {
+  --space-0:  0;
+  --space-1:  2px;
+  --space-2:  4px;
+  --space-3:  6px;
+  --space-4:  8px;
+  --space-5:  12px;
+  --space-6:  16px;
+  --space-7:  20px;
+  --space-8:  24px;
+  --space-9:  32px;
+  --space-10: 40px;
+  --space-11: 48px;
+  --space-12: 64px;
+  --space-13: 80px;
+  --space-14: 96px;
+  --space-15: 128px;
+
+  /* Common component paddings */
+  --pad-control-x: 14px;
+  --pad-control-y: 8px;
+  --gap-tight: 6px;
+  --gap-snug:  10px;
+  --gap-cozy:  16px;
+  --gap-loose: 24px;
+
+  --container-max: 1120px;
+  --panel-width:   640px;  /* the Latch app panel */
+}

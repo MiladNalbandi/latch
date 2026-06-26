@@ -37,8 +37,15 @@ It orchestrates persistence (feature 04) but the file format lives there.
 - **03-AC-9.** WHEN the store is initialized, THE SYSTEM SHALL load existing items from
   persistence and apply the current cap.
 
+## v0.1 (Latch) addendum
+
+- **03-AC-10.** `ClipItem` SHALL carry `type: ClipType` (feature 12), `source: String?`
+  (feature 01), `pinned: Bool` (feature 13), and optional `imageData`/`fileURL`.
+- **03-AC-11.** Ordering SHALL be **pinned-first, then most-recent** (see 13-AC-2).
+- **03-AC-12.** Cap eviction SHALL skip pinned items (see 13-AC-3).
+- **03-AC-13.** THE SYSTEM SHALL support `togglePin(id:)` (feature 13).
+
 ## Out of scope
 
-- The JSON file format and atomic write mechanics (feature 04).
+- The encrypted file format and atomic write mechanics (feature 04).
 - Search/filtering (feature 05).
-- Pinning/favorites (post-MVP).

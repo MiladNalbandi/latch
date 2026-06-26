@@ -1,4 +1,30 @@
-# 09 — Preferences — Design
+# 09 — Settings — Design
+
+> Reworked for the Latch tabbed settings. Reference:
+> `/design/ui_kits/app/LatchSettings.jsx`.
+
+## v0.1 Latch files
+
+```
+Sources/PastaEngine/Preferences.swift              # UserDefaults config (engine)
+Sources/PastaApp/SettingsWindowController.swift    # single titled window host
+Sources/PastaApp/SettingsView.swift                # tabbed: General / Privacy / Sync(disabled)
+```
+
+`Preferences` (engine) gains, beyond `historyCap`/`pollInterval`:
+`soundOnCopy: Bool` (def false), `showCountInMenuBar: Bool` (def true),
+`ignorePasswords: Bool` (def true), `clearOnLock: Bool` (def false),
+`incognito: Bool` (def false), `accentKey: String` (def "latch"). All `@Published`,
+`UserDefaults`-backed, clamped where numeric.
+
+`SettingsView` renders `Section`/`Row` like the JSX, using `PSwitch`, `PButton`,
+`PBadge`, `PKbd`, and `KeyboardShortcuts.Recorder`. Accent picker writes
+`AccentStore.shared` (feature 11) + `prefs.accentKey`. Sync tab shows a disabled card with a
+"Coming soon" badge. Live application is wired in `AppDelegate` via Combine sinks:
+`historyCap→store.setCap`, `pollInterval→monitor.setInterval`, `incognito→monitor.isPaused +
+menu bar`, `showCountInMenuBar→status item`, `accentKey→AccentStore`.
+
+## Original single-pane notes (superseded)
 
 ## Files
 

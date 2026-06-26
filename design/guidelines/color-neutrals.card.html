@@ -1,0 +1,38 @@
+<!-- @dsCard group="Colors" viewport="700x180" name="Neutrals — Ink & Paper" subtitle="Cool ink text on a warm paper canvas" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-50); padding: 18px; }
+  .grp { margin-bottom: 10px; }
+  .lbl { font-size: 11px; font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--text-muted); margin: 0 0 6px; }
+  .row { display: flex; gap: 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--line); }
+  .sw { flex: 1; height: 52px; display: flex; align-items: flex-end; padding: 5px 7px; }
+  .sw span { font-family: var(--font-mono); font-size: 9.5px; }
+</style>
+</head>
+<body>
+  <div class="grp">
+    <p class="lbl">Ink (text & dark surfaces)</p>
+    <div class="row">
+      <div class="sw" style="background:var(--ink-900)"><span style="color:#fff">900</span></div>
+      <div class="sw" style="background:var(--ink-700)"><span style="color:#fff">700</span></div>
+      <div class="sw" style="background:var(--ink-500)"><span style="color:#fff">500</span></div>
+      <div class="sw" style="background:var(--ink-300)"><span style="color:var(--ink-900)">300</span></div>
+      <div class="sw" style="background:var(--ink-100)"><span style="color:var(--ink-900)">100</span></div>
+    </div>
+  </div>
+  <div class="grp">
+    <p class="lbl">Paper (canvas & cards)</p>
+    <div class="row">
+      <div class="sw" style="background:var(--paper-0)"><span style="color:var(--ink-700)">0 ·#fff</span></div>
+      <div class="sw" style="background:var(--paper-50)"><span style="color:var(--ink-700)">50 ·app</span></div>
+      <div class="sw" style="background:var(--paper-100)"><span style="color:var(--ink-700)">100</span></div>
+      <div class="sw" style="background:var(--paper-200)"><span style="color:var(--ink-700)">200</span></div>
+      <div class="sw" style="background:var(--line)"><span style="color:var(--ink-700)">line</span></div>
+    </div>
+  </div>
+</body>
+</html>

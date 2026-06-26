@@ -1,0 +1,7 @@
+/* Latch — Webfonts.
+   NOTE: No brand font files were provided. These are Google Fonts substitutions,
+   served from fonts.gstatic.com (works online). Swap for self-hosted binaries when available.
+   - Bricolage Grotesque → display / headings (friendly, modern, slightly quirky)
+   - Hanken Grotesk      → UI / body (clean, legible, warm)
+   - JetBrains Mono      → keycaps, shortcuts, code, hashes */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap");

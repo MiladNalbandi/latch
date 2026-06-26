@@ -1,0 +1,35 @@
+<!-- @dsCard group="Components" viewport="700x320" name="Clipboard History" subtitle="ClipItem rows — text, link, color, code, image" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-100); padding: 22px; }
+  .panel { background: var(--paper-0); border-radius: var(--radius-panel); box-shadow: var(--shadow-lg); padding: 8px; max-width: 560px; margin: 0 auto; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+  const { ClipItem } = window.LatchDesignSystem_fe0ecb;
+  function Demo() {
+    const [sel, setSel] = React.useState(1);
+    return (
+      <div className="panel">
+        <ClipItem type="link" content="latch.app/pricing" source="Safari" time="2m ago" index={1} selected={sel===0} onClick={()=>setSel(0)} pinned={false} />
+        <ClipItem type="text" content="Thanks so much — let's talk Thursday." source="Mail" time="9m ago" index={2} pinned selected={sel===1} onClick={()=>setSel(1)} />
+        <ClipItem type="color" content="#12a877" source="Figma" time="22m ago" index={3} selected={sel===2} onClick={()=>setSel(2)} />
+        <ClipItem type="code" content="git rebase -i HEAD~3" source="Terminal" time="1h ago" index={4} selected={sel===3} onClick={()=>setSel(3)} />
+        <ClipItem type="file" content="Q3-handoff.pdf" source="Finder" time="3h ago" index={5} selected={sel===4} onClick={()=>setSel(4)} />
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
+</body>
+</html>

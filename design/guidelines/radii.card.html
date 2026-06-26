@@ -1,0 +1,26 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Radii" subtitle="Soft macOS curves · xs → keycap → panel" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-50); padding: 18px 22px; }
+  .row { display: flex; gap: 16px; align-items: flex-end; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .box { width: 64px; height: 56px; background: var(--paper-0); border: 1.5px solid var(--green-500); box-shadow: var(--shadow-sm); }
+  .item span { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box" style="border-radius:var(--radius-xs)"></div><span>xs · 4</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-sm)"></div><span>sm · 6</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-keycap)"></div><span>key · 7</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-md)"></div><span>md · 10</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-card)"></div><span>card · 14</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-panel)"></div><span>panel · 16</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-2xl)"></div><span>2xl · 24</span></div>
+  </div>
+</body>
+</html>

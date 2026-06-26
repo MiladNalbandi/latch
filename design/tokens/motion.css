@@ -1,0 +1,17 @@
+/* Latch — Motion tokens.
+   Snappy and native: short durations, gentle spring-ish easing. Friendly, never bouncy-cartoon.
+   Hover = subtle lift/tint; press = quick scale-down to 0.97. */
+:root {
+  --dur-instant: 80ms;  /* @kind other */
+  --dur-fast:    140ms; /* @kind other */
+  --dur-base:    200ms; /* @kind other */
+  --dur-slow:    320ms; /* @kind other */
+
+  /* default, decisive settle */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  /* gentle overshoot */
+  --ease-spring: cubic-bezier(0.34, 1.42, 0.5, 1); /* @kind other */
+
+  --press-scale: 0.97; /* @kind other */
+}

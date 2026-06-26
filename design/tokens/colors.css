@@ -1,0 +1,100 @@
+/* Latch — Color tokens
+   Vibe: friendly + secure. A warm paper canvas, a confident "Latch green"
+   (security/go/calm), a warm amber for highlights, and a clean secure-blue.
+   Base scales first, then semantic aliases. */
+:root {
+  /* ---- Ink (cool near-black neutrals) ---- */
+  --ink-900: #11141a;
+  --ink-800: #1b1f27;
+  --ink-700: #2b313b;
+  --ink-600: #434b57;
+  --ink-500: #5a626e;
+  --ink-400: #7a828d;
+  --ink-300: #9aa1ac;
+  --ink-200: #c3c8cf;
+  --ink-100: #e2e5e8;
+
+  /* ---- Paper (warm canvas neutrals) ---- */
+  --paper-0:   #ffffff;
+  --paper-50:  #fbfaf6;
+  --paper-100: #f4f2ec;
+  --paper-200: #ebe8df;
+  --line:      #e4e1d8;   /* hairline borders on paper */
+  --line-strong: #d4d0c4;
+
+  /* ---- Latch green (primary) ---- */
+  --green-700: #0a6a4a;
+  --green-600: #0e8c63;
+  --green-500: #12a877;   /* primary */
+  --green-400: #2cc18f;
+  --green-300: #7adcbb;
+  --green-100: #d6f2e6;
+  --green-50:  #ecfaf3;
+
+  /* ---- Amber (accent / highlight) ---- */
+  --amber-600: #d98712;
+  --amber-500: #f2a52c;
+  --amber-300: #f8c878;
+  --amber-100: #fcebcb;
+  --amber-50:  #fef7e9;
+
+  /* ---- Secure blue (supporting: locks, encryption, info) ---- */
+  --blue-600: #1f55c9;
+  --blue-500: #2f6fed;
+  --blue-300: #8fb3f6;
+  --blue-100: #dbe7fc;
+
+  /* ---- Red (danger) ---- */
+  --red-600: #c93b3f;
+  --red-500: #e5484d;
+  --red-100: #fbdcdd;
+
+  /* ===== Semantic aliases ===== */
+  --bg-app:        var(--paper-50);
+  --bg-canvas:     var(--paper-100);
+  --surface-card:  var(--paper-0);
+  --surface-raised:var(--paper-0);
+  --surface-sunken:var(--paper-100);
+  --surface-overlay: rgba(17, 20, 26, 0.42);
+
+  --text-strong:   var(--ink-900);
+  --text-body:     var(--ink-700);
+  --text-muted:    var(--ink-500);
+  --text-faint:    var(--ink-400);
+  --text-on-primary: #ffffff;
+  --text-on-dark:  var(--paper-50);
+
+  --border-subtle: var(--line);
+  --border-strong: var(--line-strong);
+  --border-focus:  var(--green-500);
+
+  --primary:       var(--green-500);
+  --primary-hover: var(--green-600);
+  --primary-press: var(--green-700);
+  --primary-tint:  var(--green-100);
+  --primary-tint-soft: var(--green-50);
+
+  --accent:        var(--amber-500);
+  --accent-tint:   var(--amber-100);
+
+  --secure:        var(--blue-500);
+  --secure-tint:   var(--blue-100);
+
+  --success:       var(--green-500);
+  --success-tint:  var(--green-100);
+  --warning:       var(--amber-500);
+  --warning-tint:  var(--amber-100);
+  --danger:        var(--red-500);
+  --danger-tint:   var(--red-100);
+  --info:          var(--blue-500);
+  --info-tint:     var(--blue-100);
+
+  --focus-ring:    color-mix(in srgb, var(--green-500) 38%, transparent);
+
+  /* Dark "ink" surfaces (used by the app panel chrome, footers) */
+  --ink-surface:   #181c23;
+  --ink-surface-2: #20252e;
+  --ink-line:      rgba(255,255,255,0.08);
+  --text-on-ink:   #eef0f2;
+  --text-on-ink-muted: #9aa1ac;
+}
