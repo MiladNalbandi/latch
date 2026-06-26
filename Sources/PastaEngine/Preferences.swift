@@ -21,6 +21,9 @@ public final class Preferences: ObservableObject {
         static let accentKey = "pasta.accentKey"
     }
 
+    /// Explicit publisher — all settings are computed (no `@Published` members).
+    public let objectWillChange = ObservableObjectPublisher()
+
     private let defaults: UserDefaults
 
     public init(defaults: UserDefaults = .standard) {
