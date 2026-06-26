@@ -2,7 +2,11 @@ import SwiftUI
 
 /// Soft, cool-ink shadows (design/tokens/shadows.css).
 enum Elevation {
-    struct ShadowStyle { let color: Color; let radius: CGFloat; let y: CGFloat }
+    struct ShadowStyle {
+        let color: Color
+        let radius: CGFloat
+        let y: CGFloat
+    }
 
     static let sm = ShadowStyle(color: Color(hex: 0x11141A, alpha: 0.06), radius: 2, y: 1)
     static let md = ShadowStyle(color: Color(hex: 0x11141A, alpha: 0.10), radius: 12, y: 4)

@@ -1,31 +1,42 @@
 # SwiftFormat configuration for pasta.
 # Run locally: `make format` (apply) or `make format-check` (verify).
 # Requires `brew install swiftformat`.
+#
+# Philosophy: enforce the rules that prevent real inconsistency — indentation,
+# trailing whitespace, brace (K&R) style, blank-line hygiene, operator/paren spacing,
+# duplicate imports — and *preserve* the author's subjective layout choices
+# (single-line property/function bodies, explicit `return`, explicit type
+# annotations on token tables, import order, argument wrapping, trailing commas).
+# This keeps the design-system token files and compact SwiftUI views readable, and
+# is an intentional, documented house style rather than the stock defaults.
 
 --swiftversion 5.9
-
-# Layout
 --indent 4
---maxwidth 120
---wraparguments before-first
---wrapparameters before-first
---wrapcollections before-first
---funcattributes prev-line
---typeattributes prev-line
 
-# Style
---self remove
---importgrouping testable-bottom
---commas inline
---trailingclosures
---semicolons never
---ranges no-space
---emptybraces no-space
---marktypes never        # we hand-author "// MARK:" sections; don't auto-rewrite
+# Preserve author layout for these (don't reflow what we can't usefully auto-improve).
+--funcattributes preserve
+--typeattributes preserve
+--wraparguments preserve
+--wrapparameters preserve
+--wrapcollections preserve
+--marktypes never
 
-# Cleanup
---redundanttype inferred
---stripunusedargs closure-only
+# Relaxed subjective-layout rules (see philosophy above).
+--disable redundantReturn
+--disable redundantType
+--disable redundantSelf
+--disable redundantNilInit
+--disable wrapPropertyBodies
+--disable wrapFunctionBodies
+--disable blankLinesBetweenScopes
+--disable numberFormatting
+--disable docComments
+--disable redundantViewBuilder
+--disable consecutiveSpaces
+--disable sortImports
+--disable trailingCommas
+--disable wrap
+--disable wrapMultilineStatementBraces
 
-# Excludes (third-party reference + generated output)
+# Excludes (third-party reference + generated output).
 --exclude .build,DerivedData,design,Pods
