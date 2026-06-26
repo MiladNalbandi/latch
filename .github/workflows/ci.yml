@@ -52,8 +52,6 @@ jobs:
 
   lint:
     runs-on: macos-15
-    # Non-blocking for now while the build is stabilized; flip to blocking once green.
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
