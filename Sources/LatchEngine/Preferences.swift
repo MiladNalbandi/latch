@@ -19,6 +19,7 @@ public final class Preferences: ObservableObject {
         static let clearOnLock = "latch.clearOnLock"
         static let incognito = "latch.incognito"
         static let accentKey = "latch.accentKey"
+        static let autoPaste = "latch.autoPaste"
     }
 
     /// Explicit publisher — all settings are computed (no `@Published` members).
@@ -37,6 +38,7 @@ public final class Preferences: ObservableObject {
             Key.clearOnLock: false,
             Key.incognito: false,
             Key.accentKey: Preferences.defaultAccentKey,
+            Key.autoPaste: true,
         ])
     }
 
@@ -83,6 +85,13 @@ public final class Preferences: ObservableObject {
     public var accentKey: String {
         get { defaults.string(forKey: Key.accentKey) ?? Preferences.defaultAccentKey }
         set { objectWillChange.send(); defaults.set(newValue, forKey: Key.accentKey) }
+    }
+
+    /// Paste the picked clip directly into the previous app (simulated ⌘V).
+    /// Requires Accessibility permission; falls back to copy-only when not granted.
+    public var autoPaste: Bool {
+        get { defaults.bool(forKey: Key.autoPaste) }
+        set { objectWillChange.send(); defaults.set(newValue, forKey: Key.autoPaste) }
     }
 
     // MARK: - Helpers

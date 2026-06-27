@@ -18,6 +18,7 @@ struct SettingsView: View {
     }
     @State private var tab: Tab = .general
     @State private var launchAtLogin: Bool = false
+    @State private var axTrusted: Bool = AutoPaster.isTrusted
 
     var body: some View {
         VStack(spacing: 0) {
@@ -36,7 +37,10 @@ struct SettingsView: View {
         }
         .frame(width: 460, height: 520)
         .background(Palette.paper50)
-        .onAppear { launchAtLogin = loginItem.isEnabled }
+        .onAppear {
+            launchAtLogin = loginItem.isEnabled
+            axTrusted = AutoPaster.isTrusted
+        }
     }
 
     // MARK: Tabs
@@ -85,6 +89,24 @@ struct SettingsView: View {
                 }
                 toggleRow("Play a sound on copy", "A soft tick when something's captured.", bind(\.soundOnCopy))
                 toggleRow("Show item count in menu bar", nil, bind(\.showCountInMenuBar))
+            }
+            section("Pasting") {
+                toggleRow("Paste directly into the app",
+                          "After you pick a clip, Latch types ⌘V for you. Needs Accessibility.",
+                          bind(\.autoPaste)) { on in
+                    // Ask once when enabling. If declined, we don't nag — auto-paste simply
+                    // stays off and Latch falls back to copy-only.
+                    if on, !AutoPaster.isTrusted { AutoPaster.requestAccess() }
+                    axTrusted = AutoPaster.isTrusted
+                }
+                if prefs.autoPaste, !axTrusted {
+                    row("Accessibility not granted",
+                        "Latch will just copy the clip — press ⌘V to paste yourself. Grant access anytime to enable direct paste.") {
+                        PButton(title: "Open Settings…", variant: .secondary, systemImage: "arrow.up.forward.app") {
+                            AutoPaster.openAccessibilitySettings()
+                        }
+                    }
+                }
             }
             section("Shortcuts") {
                 row("Open clipboard history", "The one you'll use a hundred times a day.") {

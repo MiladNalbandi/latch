@@ -33,6 +33,11 @@ final class HistoryPanelController {
     private var keyMonitor: Any?
     private var toastDismiss: DispatchWorkItem?
 
+    /// The app that was frontmost before the panel opened — the auto-paste target.
+    private var previousApp: NSRunningApplication?
+    /// Read at paste time so the toggle in Settings takes effect immediately.
+    var isAutoPasteEnabled: () -> Bool = { false }
+
     init(store: HistoryStore, matcher: FuzzyMatcher, pasteboard: PasteboardWriting,
          onOpenSettings: @escaping () -> Void, onCopySound: @escaping () -> Void) {
         self.vm = HistoryViewModel(store: store, matcher: matcher, pasteboard: pasteboard)
@@ -54,7 +59,7 @@ final class HistoryPanelController {
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
 
         vm.onCopySound = onCopySound
-        vm.onActivate = { [weak self] in self?.hide() }
+        vm.onActivate = { [weak self] in self?.dismissAndPaste() }
 
         let host = NSHostingView(rootView: PanelRoot(vm: vm, onOpenSettings: onOpenSettings))
         host.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +86,8 @@ final class HistoryPanelController {
 
     func show() {
         isClosing = false
+        // Capture the frontmost app *before* we activate Latch — it's the paste target.
+        previousApp = NSWorkspace.shared.frontmostApplication
         vm.resetForShow()
         position()
         NSApp.activate(ignoringOtherApps: true)
@@ -89,14 +96,23 @@ final class HistoryPanelController {
         animateIn()
     }
 
-    func hide() {
-        guard !isClosing else { return }
+    func hide(then completion: (() -> Void)? = nil) {
+        guard !isClosing else { completion?(); return }
         isClosing = true
         removeKeyMonitor()
         animateOut { [weak self] in
             self?.panel.orderOut(nil)
             self?.isClosing = false
+            completion?()
         }
+    }
+
+    /// Selection chosen: the clip is already on the pasteboard. Dismiss, then (if enabled and
+    /// permitted) paste it straight into the app the user came from.
+    private func dismissAndPaste() {
+        let target = previousApp
+        let paste = isAutoPasteEnabled() && AutoPaster.isTrusted
+        hide { if paste { AutoPaster.paste(into: target) } }
     }
 
     // MARK: Entrance / exit animation

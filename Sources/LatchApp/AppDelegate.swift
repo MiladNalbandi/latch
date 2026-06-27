@@ -58,6 +58,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             onOpenSettings: { [weak self] in self?.openSettings() },
             onCopySound: { [weak self] in if self?.prefs.soundOnCopy == true { NSSound(named: "Pop")?.play() } }
         )
+        panel.isAutoPasteEnabled = { [weak self] in self?.prefs.autoPaste ?? false }
         statusItem = StatusItemController(
             onShow: { [weak self] in self?.panel.toggle() },
             onPrefs: { [weak self] in self?.openSettings() },
