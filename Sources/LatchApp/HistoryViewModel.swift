@@ -25,6 +25,9 @@ final class HistoryViewModel: ObservableObject {
     @Published private(set) var results: [ClipItem] = []
     @Published var selectionIndex: Int = 0
     @Published var toast: String? = nil
+    /// Bumped whenever the search field should (re)claim focus — on each panel open and on
+    /// the in-panel "focus search" key. The panel view observes this to set focus.
+    @Published var focusTick: Int = 0
 
     /// Set by the controller to dismiss the panel after a paste.
     var onActivate: (() -> Void)?
@@ -64,11 +67,25 @@ final class HistoryViewModel: ObservableObject {
         selectionIndex = 0
         toast = nil
         recompute()
+        focusSearch()
+    }
+
+    /// Ask the panel to focus the search field (so typing immediately searches).
+    func focusSearch() {
+        focusTick &+= 1
     }
 
     func moveSelection(by delta: Int) {
         guard !results.isEmpty else { return }
         selectionIndex = min(max(selectionIndex + delta, 0), results.count - 1)
+    }
+
+    /// Cycle the active filter chip (Tab / Shift+Tab).
+    func cycleFilter(by delta: Int) {
+        let all = ClipFilter.allCases
+        guard let i = all.firstIndex(of: filter) else { return }
+        let next = (i + delta + all.count) % all.count
+        filter = all[next]
     }
 
     /// Copy the selected (or Nth) clip back to the pasteboard, then dismiss.

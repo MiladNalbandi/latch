@@ -44,8 +44,8 @@ struct PButton: View {
         case .primary: return Palette.onPrimary
         case .secondary: return Palette.textStrong
         case .ghost: return Palette.textBody
-        case .danger: return .white
-        case .secure: return .white
+        case .danger: return Palette.onPrimary
+        case .secure: return Palette.onPrimary
         }
     }
     private var bg: Color {

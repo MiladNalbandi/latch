@@ -78,6 +78,8 @@ public final class Preferences: ObservableObject {
         set { objectWillChange.send(); defaults.set(newValue, forKey: Key.incognito) }
     }
 
+    /// Retained for persistence/back-compat; Latch now follows the macOS system accent
+    /// (`Color.accentColor`) rather than a stored choice.
     public var accentKey: String {
         get { defaults.string(forKey: Key.accentKey) ?? Preferences.defaultAccentKey }
         set { objectWillChange.send(); defaults.set(newValue, forKey: Key.accentKey) }

@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 extension Color {
@@ -8,95 +9,88 @@ extension Color {
         let b = Double(hex & 0xFF) / 255
         self.init(.sRGB, red: r, green: g, blue: b, opacity: alpha)
     }
-}
 
-/// Holds the user-chosen accent color, recoloring `Palette.primary` live (feature 09 + 11).
-final class AccentStore: ObservableObject {
-    static let shared = AccentStore()
-
-    /// System-accent-style swatches, Latch green default.
-    struct Accent: Identifiable, Equatable {
-        let id: String
-        let name: String
-        let color: Color
-        let on: Color
+    /// Resolves per the drawing view's effective appearance (light/dark), live — so a single
+    /// token adapts to system dark mode without threading `colorScheme` through every view.
+    init(light: Color, dark: Color) {
+        self.init(nsColor: NSColor(name: nil) { appearance in
+            let isDark = appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+            return NSColor(isDark ? dark : light)
+        })
     }
 
-    static let accents: [Accent] = [
-        Accent(id: "latch", name: "Latch", color: Color(hex: 0x12A877), on: .white),
-        Accent(id: "blue", name: "Blue", color: Color(hex: 0x007AFF), on: .white),
-        Accent(id: "purple", name: "Purple", color: Color(hex: 0xA64DD6), on: .white),
-        Accent(id: "pink", name: "Pink", color: Color(hex: 0xF74F9E), on: .white),
-        Accent(id: "red", name: "Red", color: Color(hex: 0xFF5257), on: .white),
-        Accent(id: "orange", name: "Orange", color: Color(hex: 0xF7821B), on: .white),
-        Accent(id: "yellow", name: "Yellow", color: Color(hex: 0xFFC402), on: Color(hex: 0x3A2C00)),
-        Accent(id: "graphite", name: "Graphite", color: Color(hex: 0x8A8A8E), on: .white),
-    ]
-
-    @Published var key: String = "latch"
-
-    var current: Accent { AccentStore.accents.first { $0.id == key } ?? AccentStore.accents[0] }
-    var color: Color { current.color }
-    var onColor: Color { current.on }
-
-    func set(_ key: String) { self.key = key }
+    /// Light/dark pair from two `0xRRGGBB` hex values.
+    init(lightHex: UInt32, darkHex: UInt32) {
+        self.init(light: Color(hex: lightHex), dark: Color(hex: darkHex))
+    }
 }
 
-/// Latch color tokens (from design/tokens/colors.css).
+/// Latch color tokens. Surfaces/text adapt to system light/dark; every accent follows the
+/// macOS system accent (`Color.accentColor` / `NSColor.controlAccentColor`).
 enum Palette {
-    // Paper (warm canvas)
-    static let paper0 = Color(hex: 0xFFFFFF)
-    static let paper50 = Color(hex: 0xFBFAF6)
-    static let paper100 = Color(hex: 0xF4F2EC)
-    static let paper200 = Color(hex: 0xEBE8DF)
-    static let line = Color(hex: 0xE4E1D8)
-    static let lineStrong = Color(hex: 0xD4D0C4)
+    // MARK: Surfaces (warm paper in light, cool ink in dark)
 
-    // Ink ramp (cool near-black)
-    static let ink900 = Color(hex: 0x11141A)
-    static let ink800 = Color(hex: 0x1B1F27)
-    static let ink700 = Color(hex: 0x2B313B)
-    static let ink500 = Color(hex: 0x5A626E)
-    static let ink400 = Color(hex: 0x7A828D)
-    static let ink200 = Color(hex: 0xC3C8CF)
+    static let paper0 = Color(lightHex: 0xFFFFFF, darkHex: 0x22272F)
+    static let paper50 = Color(lightHex: 0xFBFAF6, darkHex: 0x181C23)
+    static let paper100 = Color(lightHex: 0xF4F2EC, darkHex: 0x20252E)
+    static let paper200 = Color(lightHex: 0xEBE8DF, darkHex: 0x2B313B)
+    static let line = Color(lightHex: 0xE4E1D8, darkHex: 0x333A45)
+    static let lineStrong = Color(lightHex: 0xD4D0C4, darkHex: 0x454D59)
 
-    // Latch green
-    static let green700 = Color(hex: 0x0A6A4A)
-    static let green600 = Color(hex: 0x0E8C63)
-    static let green500 = Color(hex: 0x12A877)
-    static let green300 = Color(hex: 0x7ADCBB)
-    static let green100 = Color(hex: 0xD6F2E6)
-    static let green50 = Color(hex: 0xECFAF3)
+    // MARK: Text
 
-    // Accent / secure / danger
-    static let amber500 = Color(hex: 0xF2A52C)
-    static let blue600 = Color(hex: 0x1F55C9)
-    static let blue500 = Color(hex: 0x2F6FED)
-    static let blue100 = Color(hex: 0xDBE7FC)
-    static let red500 = Color(hex: 0xE5484D)
-    static let red600 = Color(hex: 0xC93B3F)
-    static let red100 = Color(hex: 0xFBDCDD)
+    static let textStrong = Color(lightHex: 0x11141A, darkHex: 0xEEF0F2)
+    static let textBody = Color(lightHex: 0x2B313B, darkHex: 0xD6DAE0)
+    static let textMuted = Color(lightHex: 0x5A626E, darkHex: 0xAEB6C0)
+    static let textFaint = Color(lightHex: 0x7A828D, darkHex: 0x8B939E)
+    static let ink800 = Color(lightHex: 0x1B1F27, darkHex: 0xE2E5E9) // keycap default fg
+    static let ink200 = Color(lightHex: 0xC3C8CF, darkHex: 0x4A515C) // tiny separators
 
-    // Dark "ink" surfaces (footer, keycaps)
-    static let inkSurface = Color(hex: 0x181C23)
-    static let inkSurface2 = Color(hex: 0x20252E)
+    // MARK: Dark "ink" band (footer, keycaps, toast)
+    // Intentionally a dark surface with light text in BOTH appearances — it's a brand
+    // element and must not invert in dark mode. Deepened slightly in dark so it still
+    // separates from the (now dark) panel body.
+
+    static let inkSurface = Color(lightHex: 0x181C23, darkHex: 0x0F1318)
+    static let inkSurface2 = Color(lightHex: 0x20252E, darkHex: 0x161A20)
     static let textOnInk = Color(hex: 0xEEF0F2)
 
-    // Semantic (primary follows the live accent)
-    static var primary: Color { AccentStore.shared.color }
-    static var onPrimary: Color { AccentStore.shared.onColor }
-    static let primaryHover = green600
-    static let primaryPress = green700
-    static let primaryTint = green100
-    static let primaryTintSoft = green50
+    // MARK: Accent — follows the macOS system accent
 
-    static let textStrong = ink900
-    static let textBody = ink700
-    static let textMuted = ink500
-    static let textFaint = ink400
+    static let primary = Color.accentColor
+    static let primaryTint = Color.accentColor.opacity(0.16)
+    static let primaryTintSoft = Color.accentColor.opacity(0.08)
 
-    static let secure = blue500
-    static let secureTint = blue100
-    static let danger = red500
-    static let accent = amber500
+    /// Darker accent for hover/press fills (e.g. the "go" keycap edge).
+    static var primaryHover: Color { accentBlended(0.15) }
+    static var primaryPress: Color { accentBlended(0.28) }
+
+    /// Legible foreground (black/white) on top of the accent fill — flips for light accents
+    /// like yellow and dark ones like graphite.
+    static var onPrimary: Color {
+        Color(nsColor: NSColor(name: nil) { _ in
+            let c = NSColor.controlAccentColor.usingColorSpace(.sRGB) ?? .white
+            let lum = 0.299 * c.redComponent + 0.587 * c.greenComponent + 0.114 * c.blueComponent
+            return lum > 0.6 ? .black : .white
+        })
+    }
+
+    // Every semantic accent follows the system accent (per design decision).
+    static let secure = Color.accentColor
+    static let secureTint = Color.accentColor.opacity(0.14)
+    static let danger = Color.accentColor
+    static let dangerStrong = Color.accentColor
+    static let dangerTint = Color.accentColor.opacity(0.14)
+    static let accent = Color.accentColor
+    static let success = Color.accentColor
+    static let successTint = Color.accentColor.opacity(0.14)
+
+    // MARK: Helpers
+
+    /// The system accent blended toward black by `fraction`, resolved live.
+    private static func accentBlended(_ fraction: CGFloat) -> Color {
+        Color(nsColor: NSColor(name: nil) { _ in
+            NSColor.controlAccentColor.blended(withFraction: fraction, of: .black) ?? .controlAccentColor
+        })
+    }
 }

@@ -30,9 +30,9 @@ struct PBadge: View {
         switch tone {
         case .neutral: return Palette.textMuted
         case .primary: return Palette.primaryPress
-        case .secure: return Palette.blue600
-        case .success: return Palette.green600
-        case .danger: return Palette.red600
+        case .secure: return Palette.secure
+        case .success: return Palette.success
+        case .danger: return Palette.dangerStrong
         }
     }
     private var bg: Color {
@@ -40,8 +40,8 @@ struct PBadge: View {
         case .neutral: return Palette.paper100
         case .primary: return Palette.primaryTint
         case .secure: return Palette.secureTint
-        case .success: return Palette.green100
-        case .danger: return Palette.red100
+        case .success: return Palette.successTint
+        case .danger: return Palette.dangerTint
         }
     }
 }

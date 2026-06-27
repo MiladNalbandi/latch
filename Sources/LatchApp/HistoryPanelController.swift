@@ -12,8 +12,17 @@ private struct PanelRoot: View {
     var body: some View {
         HistoryPanel(vm: vm, searchFocused: $searchFocused, onOpenSettings: onOpenSettings)
             .onAppear { DispatchQueue.main.async { searchFocused = true } }
+            // The panel is reused across open/close, so onAppear only fires once — re-focus
+            // the search field on every open (and on the ⌘F focus key) so typing always searches.
+            .onChange(of: vm.focusTick) { _ in DispatchQueue.main.async { searchFocused = true } }
             .animation(.easeOut(duration: 0.15), value: vm.toast)
     }
+}
+
+/// A borderless panel that can still become key, so the search field accepts typing.
+private final class KeyablePanel: NSPanel {
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
 }
 
 /// Hosts the frosted floating panel and owns show/hide/toggle + keyboard handling.
@@ -28,7 +37,7 @@ final class HistoryPanelController {
          onOpenSettings: @escaping () -> Void, onCopySound: @escaping () -> Void) {
         self.vm = HistoryViewModel(store: store, matcher: matcher, pasteboard: pasteboard)
 
-        panel = NSPanel(
+        panel = KeyablePanel(
             contentRect: NSRect(x: 0, y: 0, width: Space.panelWidth, height: 520),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered, defer: false
@@ -50,26 +59,114 @@ final class HistoryPanelController {
         let host = NSHostingView(rootView: PanelRoot(vm: vm, onOpenSettings: onOpenSettings))
         host.translatesAutoresizingMaskIntoConstraints = false
         panel.contentView = host
+        panel.initialFirstResponder = host
 
         // Auto-dismiss toast.
         observeToast()
+
+        // Dismiss when the panel loses focus (click outside / switch apps), like Esc.
+        NotificationCenter.default.addObserver(
+            forName: NSWindow.didResignKeyNotification, object: panel, queue: .main
+        ) { [weak self] _ in
+            guard let self, self.panel.isVisible, !self.isClosing else { return }
+            self.hide()
+        }
     }
 
     // MARK: Show / hide / toggle
 
+    private var isClosing = false
+
     func toggle() { panel.isVisible ? hide() : show() }
 
     func show() {
+        isClosing = false
         vm.resetForShow()
         position()
         NSApp.activate(ignoringOtherApps: true)
         panel.makeKeyAndOrderFront(nil)
         installKeyMonitor()
+        animateIn()
     }
 
     func hide() {
+        guard !isClosing else { return }
+        isClosing = true
         removeKeyMonitor()
-        panel.orderOut(nil)
+        animateOut { [weak self] in
+            self?.panel.orderOut(nil)
+            self?.isClosing = false
+        }
+    }
+
+    // MARK: Entrance / exit animation
+
+    private var reduceMotion: Bool { NSWorkspace.shared.accessibilityDisplayShouldReduceMotion }
+
+    private func animateIn() {
+        guard !reduceMotion, let layer = contentLayer() else {
+            panel.alphaValue = 1
+            return
+        }
+        panel.alphaValue = 0
+        layer.transform = scaleAboutTop(0.96, in: layer)
+        let spring = CASpringAnimation(keyPath: "transform")
+        spring.fromValue = NSValue(caTransform3D: scaleAboutTop(0.96, in: layer))
+        spring.toValue = NSValue(caTransform3D: CATransform3DIdentity)
+        spring.damping = 18
+        spring.stiffness = 240
+        spring.mass = 1
+        spring.duration = spring.settlingDuration
+        layer.transform = CATransform3DIdentity
+        layer.add(spring, forKey: "in")
+        NSAnimationContext.runAnimationGroup { ctx in
+            ctx.duration = 0.18
+            ctx.timingFunction = CAMediaTimingFunction(name: .easeOut)
+            panel.animator().alphaValue = 1
+        }
+    }
+
+    private func animateOut(_ completion: @escaping () -> Void) {
+        guard !reduceMotion, let layer = contentLayer() else {
+            panel.alphaValue = 1
+            completion()
+            return
+        }
+        let from = layer.transform
+        let to = scaleAboutTop(0.97, in: layer)
+        let scale = CABasicAnimation(keyPath: "transform")
+        scale.fromValue = NSValue(caTransform3D: from)
+        scale.toValue = NSValue(caTransform3D: to)
+        scale.duration = Motion.fast
+        scale.timingFunction = CAMediaTimingFunction(name: .easeIn)
+        layer.add(scale, forKey: "out")
+        NSAnimationContext.runAnimationGroup({ ctx in
+            ctx.duration = Motion.fast
+            ctx.timingFunction = CAMediaTimingFunction(name: .easeIn)
+            panel.animator().alphaValue = 0
+        }, completionHandler: { [weak self] in
+            self?.panel.alphaValue = 1   // reset for next show
+            self?.contentLayer()?.transform = CATransform3DIdentity
+            completion()
+        })
+    }
+
+    private func contentLayer() -> CALayer? {
+        guard let view = panel.contentView else { return nil }
+        view.wantsLayer = true
+        return view.layer
+    }
+
+    /// Scale transform anchored at the top-center of the layer (Spotlight-style growth),
+    /// computed without mutating `anchorPoint` so the panel never jumps.
+    private func scaleAboutTop(_ s: CGFloat, in layer: CALayer) -> CATransform3D {
+        let w = layer.bounds.width
+        let h = layer.bounds.height
+        var t = CATransform3DIdentity
+        t = CATransform3DTranslate(t, w / 2, h, 0)
+        t = CATransform3DScale(t, s, s, 1)
+        t = CATransform3DTranslate(t, -w / 2, -h, 0)
+        return t
     }
 
     private func position() {
@@ -99,11 +196,14 @@ final class HistoryPanelController {
 
     private func handle(_ event: NSEvent) -> NSEvent? {
         let cmd = event.modifierFlags.contains(.command)
+        let shift = event.modifierFlags.contains(.shift)
         switch event.keyCode {
         case 125: vm.moveSelection(by: 1); return nil          // down
         case 126: vm.moveSelection(by: -1); return nil         // up
         case 36, 76: vm.activate(); return nil                 // return / enter
         case 53: hide(); return nil                            // escape
+        case 48: vm.cycleFilter(by: shift ? -1 : 1); return nil // tab / shift-tab → filters
+        case 3 where cmd: vm.focusSearch(); return nil         // cmd-F → focus search
         case 51 where cmd: vm.deleteSelected(); return nil     // cmd-delete
         default:
             // Cmd+1…Cmd+9 → quick-pick (avoids clashing with typing digits in search).

@@ -6,7 +6,6 @@ import LatchEngine
 /// design/ui_kits/app/LatchSettings.jsx.
 struct SettingsView: View {
     @ObservedObject var prefs: Preferences
-    @ObservedObject var accent = AccentStore.shared
     let loginItem: LoginItemManager
     var onClearAll: () -> Void
 
@@ -53,9 +52,9 @@ struct SettingsView: View {
                         if t == .sync { PBadge(text: "Soon", tone: .neutral) }
                     }
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(t == .sync ? Palette.textFaint : (on ? Palette.primaryPress : Palette.textBody))
+                    .foregroundColor(t == .sync ? Palette.textFaint : (on ? Palette.primary : Palette.textBody))
                     .padding(.horizontal, 12).padding(.vertical, 7)
-                    .background(on ? Color.white : .clear)
+                    .background(on ? Palette.paper0 : .clear)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.sm, style: .continuous))
                 }
                 .buttonStyle(.plain)
@@ -71,18 +70,11 @@ struct SettingsView: View {
     private var general: some View {
         VStack(alignment: .leading, spacing: 20) {
             section("Appearance") {
-                row("Accent color", "Used for selection, controls, and highlights.") {
+                row("Accent color", "Latch follows your macOS accent color and appearance.") {
                     HStack(spacing: 8) {
-                        ForEach(AccentStore.accents) { a in
-                            Circle().fill(a.color)
-                                .frame(width: 20, height: 20)
-                                .overlay(Circle().strokeBorder(Color.black.opacity(0.1)))
-                                .overlay(
-                                    Image(systemName: "checkmark").font(.system(size: 10, weight: .bold))
-                                        .foregroundColor(a.on).opacity(a.id == accent.key ? 1 : 0)
-                                )
-                                .onTapGesture { accent.set(a.id); prefs.accentKey = a.id }
-                        }
+                        Circle().fill(Palette.primary).frame(width: 20, height: 20)
+                            .overlay(Circle().strokeBorder(Palette.line))
+                        Text("System").font(.system(size: 13, weight: .medium)).foregroundColor(Palette.textMuted)
                     }
                 }
             }
@@ -110,7 +102,7 @@ struct SettingsView: View {
     private var privacy: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack(alignment: .top, spacing: 10) {
-                Image(systemName: "lock.fill").foregroundColor(Palette.blue600)
+                Image(systemName: "lock.fill").foregroundColor(Palette.secure)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Your clipboard never leaves this Mac.").font(.system(size: 13, weight: .semibold))
                     Text("History is stored encrypted on-device. No account required.")

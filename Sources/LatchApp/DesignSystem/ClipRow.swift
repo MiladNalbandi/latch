@@ -19,6 +19,9 @@ struct ClipRow: View {
     var selected: Bool = false
     var index: Int? = nil   // 1-9 quick-pick
 
+    @State private var hovering = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         HStack(spacing: 12) {
             typeTile
@@ -41,7 +44,7 @@ struct ClipRow: View {
             if item.pinned {
                 Image(systemName: "pin.fill")
                     .font(.system(size: 13))
-                    .foregroundColor(Palette.amber500)
+                    .foregroundColor(Palette.accent)
             }
             if selected, let idx = index, idx <= 9 {
                 PKbd("\(idx)", tone: .default, size: .sm)
@@ -49,13 +52,28 @@ struct ClipRow: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 10)
-        .background(selected ? Palette.primaryTintSoft : Color.clear)
+        .background(rowBackground)
         .clipShape(RoundedRectangle(cornerRadius: Radius.control, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: Radius.control, style: .continuous)
                 .strokeBorder(selected ? Palette.primaryTint : .clear, lineWidth: 1)
         )
+        .overlay(alignment: .leading) {
+            // Accent leading bar — guarantees a visible selected state for any accent
+            // (incl. low-saturation graphite, where the tint fill alone is faint).
+            Capsule()
+                .fill(Palette.primary)
+                .frame(width: 3, height: 22)
+                .padding(.leading, 3)
+                .opacity(selected ? 1 : 0)
+        }
         .contentShape(Rectangle())
+        .onHover { h in withAnimation(Motion.standard(reduce: reduceMotion)) { hovering = h } }
+    }
+
+    private var rowBackground: Color {
+        if selected { return Palette.primaryTintSoft }
+        return hovering ? Palette.paper100 : Color.clear
     }
 
     private var isMono: Bool { item.type == .code || item.type == .link }
@@ -87,8 +105,9 @@ struct ClipRow: View {
     }
     private var tileFg: Color {
         switch item.type {
-        case .link: return Palette.blue600
-        case .code: return Palette.green300
+        case .link: return Palette.secure
+        // The code tile is a dark surface in both modes, so its glyph stays light.
+        case .code: return Palette.textOnInk
         default: return Palette.textMuted
         }
     }

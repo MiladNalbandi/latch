@@ -16,10 +16,10 @@ struct FilterBar: View {
         let on = selection == f
         return Text(f.label)
             .font(.system(size: 12.5, weight: .semibold))
-            .foregroundColor(on ? Palette.primaryPress : Palette.textMuted)
+            .foregroundColor(on ? Palette.primary : Palette.textMuted)
             .padding(.horizontal, 11)
             .padding(.vertical, 5)
-            .background(on ? Color.white.opacity(0.92) : Color.clear)
+            .background(on ? Palette.paper0.opacity(0.92) : Color.clear)
             .clipShape(Capsule())
             .elevation(on ? Elevation.sm : Elevation.ShadowStyle(color: .clear, radius: 0, y: 0))
             .contentShape(Capsule())

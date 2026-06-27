@@ -24,7 +24,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Engine
         prefs = Preferences()
-        AccentStore.shared.set(prefs.accentKey)
 
         pasteboard = SystemPasteboard()
         persistence = EncryptedJSONPersistence()
@@ -56,12 +55,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
         panel = HistoryPanelController(
             store: store, matcher: FuzzyMatcher(), pasteboard: pasteboard,
-            onOpenSettings: { [weak self] in self?.settings.show() },
+            onOpenSettings: { [weak self] in self?.openSettings() },
             onCopySound: { [weak self] in if self?.prefs.soundOnCopy == true { NSSound(named: "Pop")?.play() } }
         )
         statusItem = StatusItemController(
             onShow: { [weak self] in self?.panel.toggle() },
-            onPrefs: { [weak self] in self?.settings.show() },
+            onPrefs: { [weak self] in self?.openSettings() },
             onToggleIncognito: { [weak self] in self?.toggleIncognito() },
             onQuit: { NSApp.terminate(nil) }
         )
@@ -108,13 +107,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         monitor.isPaused = prefs.incognito
         statusItem.update(showCount: prefs.showCountInMenuBar)
         statusItem.update(incognito: prefs.incognito)
-        AccentStore.shared.set(prefs.accentKey)
     }
 
     // MARK: - Actions
 
     private func toggleIncognito() {
         prefs.incognito.toggle()   // observePrefs() applies + updates menu bar
+    }
+
+    /// Hide the floating panel before showing Settings — otherwise the always-on-top panel
+    /// renders over the settings window and blocks interaction.
+    private func openSettings() {
+        panel.hide()
+        settings.show()
     }
 
     private func quickPaste() {

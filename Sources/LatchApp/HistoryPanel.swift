@@ -1,5 +1,6 @@
-import SwiftUI
+import KeyboardShortcuts
 import LatchEngine
+import SwiftUI
 
 /// The frosted two-pane history panel. See specs/08-history-window and
 /// design/ui_kits/app/LatchPanel.jsx.
@@ -19,12 +20,22 @@ struct HistoryPanel: View {
         .frame(width: Space.panelWidth)
         .background(
             ZStack {
-                VisualEffectView(material: .hudWindow)
-                Palette.paper50.opacity(0.6)
+                VisualEffectView(material: .popover)
+                Palette.paper50.opacity(Glass.tintOpacity)
             }
         )
         .clipShape(RoundedRectangle(cornerRadius: Radius.panel, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: Radius.panel, style: .continuous).strokeBorder(Color.white.opacity(0.18), lineWidth: 0.5))
+        .overlay(
+            RoundedRectangle(cornerRadius: Radius.panel, style: .continuous)
+                .strokeBorder(Glass.border, lineWidth: 0.5)
+        )
+        .overlay(alignment: .top) {
+            // Inner top highlight — the glint along the top edge of the glass.
+            RoundedRectangle(cornerRadius: Radius.panel, style: .continuous)
+                .strokeBorder(Glass.topHighlight, lineWidth: 1)
+                .mask(LinearGradient(colors: [.white, .clear], startPoint: .top, endPoint: .center))
+                .allowsHitTesting(false)
+        }
         .elevation(Elevation.panel)
         .overlay(alignment: .bottom) { toast }
     }
@@ -33,13 +44,20 @@ struct HistoryPanel: View {
 
     private var header: some View {
         HStack(spacing: 10) {
-            PSearchField(text: $vm.query, placeholder: "Search your clipboard…", focused: searchFocused)
+            PSearchField(text: $vm.query, placeholder: "Search your clipboard…",
+                         focused: searchFocused, shortcutHint: openShortcut)
             PBadge(text: "Local only", tone: .secure, dot: true)
             PIconButton(systemImage: "gearshape", label: "Settings", action: onOpenSettings)
         }
         .padding(.horizontal, 14)
         .padding(.top, 12)
         .padding(.bottom, 10)
+    }
+
+    /// The global "open Latch" hotkey, shown as a hint in the search field.
+    /// Editable in Settings → Shortcuts.
+    private var openShortcut: String? {
+        KeyboardShortcuts.getShortcut(for: .toggleWindow).map(String.init(describing:))
     }
 
     private var filters: some View {
@@ -58,7 +76,7 @@ struct HistoryPanel: View {
             list
                 .frame(width: Space.listPaneWidth)
                 .overlay(alignment: .trailing) {
-                    Rectangle().fill(Palette.line.opacity(0.6)).frame(width: 0.5)
+                    Rectangle().fill(Palette.lineStrong.opacity(0.7)).frame(width: 1)
                 }
             PreviewPane(
                 item: vm.selectedItem,
@@ -101,6 +119,7 @@ struct HistoryPanel: View {
     private var footer: some View {
         HStack(spacing: 18) {
             hint(keys: ["up", "down"], label: "Navigate")
+            hint(keys: ["tab"], label: "Filter")
             hint(keys: ["enter"], label: "Paste")
             hint(keys: ["cmd", "del"], label: "Delete")
             Spacer()
@@ -114,7 +133,7 @@ struct HistoryPanel: View {
                 Palette.inkSurface.opacity(0.82)
             }
         )
-        .foregroundColor(Color.white.opacity(0.72))
+        .foregroundColor(Palette.textOnInk.opacity(0.72))
     }
 
     private func hint(keys: [String], label: String) -> some View {
@@ -129,7 +148,7 @@ struct HistoryPanel: View {
     @ViewBuilder private var toast: some View {
         if let toast = vm.toast {
             HStack(spacing: 8) {
-                Image(systemName: "checkmark").foregroundColor(Palette.green300)
+                Image(systemName: "checkmark").foregroundColor(Palette.success)
                 Text(toast).font(.system(size: 13, weight: .semibold))
             }
             .padding(.horizontal, 16).padding(.vertical, 9)

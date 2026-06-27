@@ -65,7 +65,7 @@ struct PKbd: View {
     private var fg: Color {
         switch tone {
         case .default: return Palette.ink800
-        case .go: return .white
+        case .go: return Palette.onPrimary
         case .ink: return Palette.textOnInk
         }
     }

@@ -44,7 +44,7 @@ struct PreviewPane: View {
                     RoundedRectangle(cornerRadius: Radius.control, style: .continuous)
                         .fill(color)
                         .frame(maxWidth: .infinity, minHeight: 120)
-                        .overlay(RoundedRectangle(cornerRadius: Radius.control).strokeBorder(Color.black.opacity(0.06)))
+                        .overlay(RoundedRectangle(cornerRadius: Radius.control).strokeBorder(Color(light: .black.opacity(0.06), dark: .white.opacity(0.08))))
                     Text(hex.uppercased()).font(Typo.mono(18, .semibold)).foregroundColor(Palette.textStrong)
                 }
             } else {
@@ -56,7 +56,7 @@ struct PreviewPane: View {
                         .textSelection(.enabled)
                 }
                 .padding(14)
-                .background(Color.white.opacity(0.7))
+                .background(Palette.paper0.opacity(0.7))
                 .clipShape(RoundedRectangle(cornerRadius: Radius.control, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: Radius.control).strokeBorder(Palette.line, lineWidth: 1))
                 .frame(maxHeight: .infinity)
@@ -74,7 +74,7 @@ struct PreviewPane: View {
                     Image(systemName: "lock.shield").font(.system(size: 12))
                     Text("Local only").fontWeight(.semibold)
                 }
-                .foregroundColor(Palette.blue600)
+                .foregroundColor(Palette.secure)
             }
             .font(.system(size: 12.5))
             .foregroundColor(Palette.textMuted)
@@ -90,7 +90,7 @@ struct PreviewPane: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 18)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.white.opacity(0.55))
+        .background(Palette.paper0.opacity(0.6))
     }
 
     private var dot: some View { Circle().fill(Palette.ink200).frame(width: 3, height: 3) }
