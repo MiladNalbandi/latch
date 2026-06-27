@@ -20,6 +20,7 @@ public final class Preferences: ObservableObject {
         static let incognito = "latch.incognito"
         static let accentKey = "latch.accentKey"
         static let autoPaste = "latch.autoPaste"
+        static let hasSeenWelcome = "latch.hasSeenWelcome"
     }
 
     /// Explicit publisher — all settings are computed (no `@Published` members).
@@ -39,6 +40,7 @@ public final class Preferences: ObservableObject {
             Key.incognito: false,
             Key.accentKey: Preferences.defaultAccentKey,
             Key.autoPaste: true,
+            Key.hasSeenWelcome: false,
         ])
     }
 
@@ -92,6 +94,12 @@ public final class Preferences: ObservableObject {
     public var autoPaste: Bool {
         get { defaults.bool(forKey: Key.autoPaste) }
         set { objectWillChange.send(); defaults.set(newValue, forKey: Key.autoPaste) }
+    }
+
+    /// Whether the first-run welcome screen has been shown.
+    public var hasSeenWelcome: Bool {
+        get { defaults.bool(forKey: Key.hasSeenWelcome) }
+        set { objectWillChange.send(); defaults.set(newValue, forKey: Key.hasSeenWelcome) }
     }
 
     // MARK: - Helpers

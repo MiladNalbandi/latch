@@ -6,6 +6,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     private let onShow: () -> Void
     private let onPrefs: () -> Void
     private let onToggleIncognito: () -> Void
+    private let onWelcome: () -> Void
     private let onQuit: () -> Void
 
     private var showCount = true
@@ -17,11 +18,13 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     init(onShow: @escaping () -> Void,
          onPrefs: @escaping () -> Void,
          onToggleIncognito: @escaping () -> Void,
+         onWelcome: @escaping () -> Void,
          onQuit: @escaping () -> Void) {
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         self.onShow = onShow
         self.onPrefs = onPrefs
         self.onToggleIncognito = onToggleIncognito
+        self.onWelcome = onWelcome
         self.onQuit = onQuit
         super.init()
         buildMenu()
@@ -48,6 +51,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         menu.addItem(pauseItem)
         menu.addItem(.separator())
         menu.addItem(item("Preferences…", #selector(prefsTapped), key: ","))
+        menu.addItem(item("Welcome to Latch", #selector(welcomeTapped), key: ""))
         menu.addItem(.separator())
         menu.addItem(item("Quit Latch", #selector(quitTapped), key: "q"))
         statusItem.menu = menu
@@ -72,5 +76,6 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     @objc private func showTapped() { onShow() }
     @objc private func pauseTapped() { onToggleIncognito() }
     @objc private func prefsTapped() { onPrefs() }
+    @objc private func welcomeTapped() { onWelcome() }
     @objc private func quitTapped() { onQuit() }
 }

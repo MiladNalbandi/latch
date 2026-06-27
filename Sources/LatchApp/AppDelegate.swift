@@ -13,6 +13,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: StatusItemController!
     private var panel: HistoryPanelController!
     private var settings: SettingsWindowController!
+    private var welcome: WelcomeWindowController!
     private var hotkeys: HotkeyManager!
     private var loginItem: LoginItemManager!
     private var lockMonitor: LockMonitor!
@@ -53,6 +54,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             prefs: prefs, loginItem: loginItem,
             onClearAll: { [weak self] in self?.confirmClearAll() }
         )
+        welcome = WelcomeWindowController(onOpenSettings: { [weak self] in self?.openSettings() })
         panel = HistoryPanelController(
             store: store, matcher: FuzzyMatcher(), pasteboard: pasteboard,
             onOpenSettings: { [weak self] in self?.openSettings() },
@@ -63,6 +65,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             onShow: { [weak self] in self?.panel.toggle() },
             onPrefs: { [weak self] in self?.openSettings() },
             onToggleIncognito: { [weak self] in self?.toggleIncognito() },
+            onWelcome: { [weak self] in self?.showWelcome() },
             onQuit: { NSApp.terminate(nil) }
         )
         hotkeys = HotkeyManager(
@@ -79,6 +82,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem.update(incognito: prefs.incognito)
         observeStore()
         observePrefs()
+
+        // First launch: introduce the app once.
+        if !prefs.hasSeenWelcome {
+            prefs.hasSeenWelcome = true
+            DispatchQueue.main.async { [weak self] in self?.showWelcome() }
+        }
     }
 
     func applicationWillTerminate(_: Notification) {
@@ -121,6 +130,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func openSettings() {
         panel.hide()
         settings.show()
+    }
+
+    private func showWelcome() {
+        panel.hide()
+        welcome.show()
     }
 
     private func quickPaste() {
