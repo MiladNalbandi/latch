@@ -12,7 +12,7 @@ Copy once, paste anywhere — with one keystroke, and nothing ever leaves your M
 ![Platform](https://img.shields.io/badge/macOS-13%2B-blue)
 ![Universal](https://img.shields.io/badge/universal-Apple%20Silicon%20%2B%20Intel-555)
 ![Built with](https://img.shields.io/badge/built%20with-Swift%20%2B%20SwiftUI-orange)
-![License](https://img.shields.io/badge/license-MIT-blue)
+![License](https://img.shields.io/badge/license-GPLv3-blue)
 
 </div>
 
@@ -123,4 +123,4 @@ Keychain), there is no account, and the app makes no network requests.
 
 ## License
 
-Latch is open source under the **MIT License** — see [LICENSE](LICENSE).
+Latch is free software, licensed under the **GNU General Public License v3.0** — see [LICENSE](LICENSE).
