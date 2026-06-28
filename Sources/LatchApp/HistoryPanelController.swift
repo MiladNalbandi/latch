@@ -31,6 +31,7 @@ final class HistoryPanelController {
     private let panel: NSPanel
     private let vm: HistoryViewModel
     private var keyMonitor: Any?
+    private var outsideClickMonitor: Any?
     private var toastDismiss: DispatchWorkItem?
 
     /// The app that was frontmost before the panel opened — the auto-paste target.
@@ -49,7 +50,9 @@ final class HistoryPanelController {
         )
         panel.level = .floating
         panel.isFloatingPanel = true
-        panel.hidesOnDeactivate = true
+        // Dismissal on app-switch/click-outside is handled by the (debounced) resign-key
+        // observer below; hidesOnDeactivate would add a second, instant path that double-fires.
+        panel.hidesOnDeactivate = false
         panel.isMovableByWindowBackground = true
         panel.backgroundColor = .clear
         panel.hasShadow = true
@@ -69,9 +72,10 @@ final class HistoryPanelController {
         // Auto-dismiss toast.
         observeToast()
 
-        // Dismiss when the panel loses focus (click outside / switch apps), like Esc.
+        // Dismiss when the user switches to another app (⌘-Tab etc.). This fires only on a
+        // real deactivation — never during show()'s own activation — so it can't flicker.
         NotificationCenter.default.addObserver(
-            forName: NSWindow.didResignKeyNotification, object: panel, queue: .main
+            forName: NSApplication.didResignActiveNotification, object: nil, queue: .main
         ) { [weak self] _ in
             guard let self, self.panel.isVisible, !self.isClosing else { return }
             self.hide()
@@ -93,6 +97,7 @@ final class HistoryPanelController {
         NSApp.activate(ignoringOtherApps: true)
         panel.makeKeyAndOrderFront(nil)
         installKeyMonitor()
+        installOutsideClickMonitor()
         animateIn()
     }
 
@@ -100,6 +105,7 @@ final class HistoryPanelController {
         guard !isClosing else { completion?(); return }
         isClosing = true
         removeKeyMonitor()
+        removeOutsideClickMonitor()
         animateOut { [weak self] in
             self?.panel.orderOut(nil)
             self?.isClosing = false
@@ -208,6 +214,20 @@ final class HistoryPanelController {
 
     private func removeKeyMonitor() {
         if let m = keyMonitor { NSEvent.removeMonitor(m); keyMonitor = nil }
+    }
+
+    /// A click in any other app (or the desktop) dismisses the panel — global monitors only
+    /// fire for events not delivered to us, so clicks inside the panel are naturally ignored.
+    private func installOutsideClickMonitor() {
+        removeOutsideClickMonitor()
+        outsideClickMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { [weak self] _ in
+            guard let self, self.panel.isVisible, !self.isClosing else { return }
+            self.hide()
+        }
+    }
+
+    private func removeOutsideClickMonitor() {
+        if let m = outsideClickMonitor { NSEvent.removeMonitor(m); outsideClickMonitor = nil }
     }
 
     private func handle(_ event: NSEvent) -> NSEvent? {
