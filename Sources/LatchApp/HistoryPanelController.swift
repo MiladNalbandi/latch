@@ -106,11 +106,12 @@ final class HistoryPanelController {
         isClosing = true
         removeKeyMonitor()
         removeOutsideClickMonitor()
-        animateOut { [weak self] in
-            self?.panel.orderOut(nil)
-            self?.isClosing = false
-            completion?()
-        }
+        // Hide instantly — no close animation. (The open still animates.)
+        panel.orderOut(nil)
+        panel.alphaValue = 1
+        contentLayer()?.transform = CATransform3DIdentity
+        isClosing = false
+        completion?()
     }
 
     /// Selection chosen: the clip is already on the pasteboard. Dismiss, then (if enabled and
@@ -146,31 +147,6 @@ final class HistoryPanelController {
             ctx.timingFunction = CAMediaTimingFunction(name: .easeOut)
             panel.animator().alphaValue = 1
         }
-    }
-
-    private func animateOut(_ completion: @escaping () -> Void) {
-        guard !reduceMotion, let layer = contentLayer() else {
-            panel.alphaValue = 1
-            completion()
-            return
-        }
-        let from = layer.transform
-        let to = scaleAboutTop(0.97, in: layer)
-        let scale = CABasicAnimation(keyPath: "transform")
-        scale.fromValue = NSValue(caTransform3D: from)
-        scale.toValue = NSValue(caTransform3D: to)
-        scale.duration = Motion.fast
-        scale.timingFunction = CAMediaTimingFunction(name: .easeIn)
-        layer.add(scale, forKey: "out")
-        NSAnimationContext.runAnimationGroup({ ctx in
-            ctx.duration = Motion.fast
-            ctx.timingFunction = CAMediaTimingFunction(name: .easeIn)
-            panel.animator().alphaValue = 0
-        }, completionHandler: { [weak self] in
-            self?.panel.alphaValue = 1   // reset for next show
-            self?.contentLayer()?.transform = CATransform3DIdentity
-            completion()
-        })
     }
 
     private func contentLayer() -> CALayer? {
