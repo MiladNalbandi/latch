@@ -14,6 +14,10 @@ Copy once, paste anywhere — with one keystroke, and nothing ever leaves your M
 ![Built with](https://img.shields.io/badge/built%20with-Swift%20%2B%20SwiftUI-orange)
 ![License](https://img.shields.io/badge/license-GPLv3-blue)
 
+<br>
+
+<img src="design/latch-demo.gif" width="720" alt="Latch — open with ⌘⇧V, search, and paste anywhere">
+
 </div>
 
 ## About
