@@ -7,6 +7,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     private let onPrefs: () -> Void
     private let onToggleIncognito: () -> Void
     private let onWelcome: () -> Void
+    private let onCheckUpdates: () -> Void
     private let onQuit: () -> Void
 
     private var showCount = true
@@ -14,17 +15,20 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     private var incognito = false
 
     private let pauseItem = NSMenuItem(title: "Pause capturing (incognito)", action: nil, keyEquivalent: "")
+    private let updateItem = NSMenuItem(title: "Check for Updates…", action: nil, keyEquivalent: "")
 
     init(onShow: @escaping () -> Void,
          onPrefs: @escaping () -> Void,
          onToggleIncognito: @escaping () -> Void,
          onWelcome: @escaping () -> Void,
+         onCheckUpdates: @escaping () -> Void,
          onQuit: @escaping () -> Void) {
         self.statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         self.onShow = onShow
         self.onPrefs = onPrefs
         self.onToggleIncognito = onToggleIncognito
         self.onWelcome = onWelcome
+        self.onCheckUpdates = onCheckUpdates
         self.onQuit = onQuit
         super.init()
         buildMenu()
@@ -41,6 +45,11 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         refreshButton()
     }
 
+    /// Reflect an available update in the menu (title becomes a download prompt).
+    func update(updateAvailable version: String?) {
+        updateItem.title = version.map { "Download Latch \($0)…" } ?? "Check for Updates…"
+    }
+
     // MARK: Build
 
     private func buildMenu() {
@@ -52,6 +61,9 @@ final class StatusItemController: NSObject, NSMenuDelegate {
         menu.addItem(.separator())
         menu.addItem(item("Preferences…", #selector(prefsTapped), key: ","))
         menu.addItem(item("Welcome to Latch", #selector(welcomeTapped), key: ""))
+        updateItem.target = self
+        updateItem.action = #selector(checkUpdatesTapped)
+        menu.addItem(updateItem)
         menu.addItem(.separator())
         menu.addItem(item("Quit Latch", #selector(quitTapped), key: "q"))
         statusItem.menu = menu
@@ -77,5 +89,6 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     @objc private func pauseTapped() { onToggleIncognito() }
     @objc private func prefsTapped() { onPrefs() }
     @objc private func welcomeTapped() { onWelcome() }
+    @objc private func checkUpdatesTapped() { onCheckUpdates() }
     @objc private func quitTapped() { onQuit() }
 }

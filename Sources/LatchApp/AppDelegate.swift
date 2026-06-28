@@ -66,6 +66,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             onPrefs: { [weak self] in self?.openSettings() },
             onToggleIncognito: { [weak self] in self?.toggleIncognito() },
             onWelcome: { [weak self] in self?.showWelcome() },
+            onCheckUpdates: { [weak self] in self?.checkForUpdates(userInitiated: true) },
             onQuit: { NSApp.terminate(nil) }
         )
         hotkeys = HotkeyManager(
@@ -88,6 +89,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             prefs.hasSeenWelcome = true
             DispatchQueue.main.async { [weak self] in self?.showWelcome() }
         }
+
+        // Quietly check for a newer release in the background.
+        checkForUpdates(userInitiated: false)
     }
 
     func applicationWillTerminate(_: Notification) {
@@ -135,6 +139,57 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func showWelcome() {
         panel.hide()
         welcome.show()
+    }
+
+    // MARK: - Updates
+
+    private func checkForUpdates(userInitiated: Bool) {
+        UpdateChecker.check { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .available(version, url):
+                self.statusItem.update(updateAvailable: version)
+                // Auto-notify at most once per version; a manual check always shows it.
+                let key = "latch.lastNotifiedUpdateVersion"
+                let alreadyNotified = UserDefaults.standard.string(forKey: key) == version
+                if userInitiated || !alreadyNotified {
+                    UserDefaults.standard.set(version, forKey: key)
+                    self.presentUpdateAlert(version: version, url: url)
+                }
+            case let .upToDate(current):
+                self.statusItem.update(updateAvailable: nil)
+                if userInitiated {
+                    self.presentInfoAlert("You're up to date",
+                                          "Latch \(current) is the latest version.")
+                }
+            case .failed:
+                if userInitiated {
+                    self.presentInfoAlert("Couldn't check for updates",
+                                          "Please check your connection and try again.")
+                }
+            }
+        }
+    }
+
+    private func presentUpdateAlert(version: String, url: URL) {
+        panel.hide()
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.messageText = "Latch \(version) is available"
+        alert.informativeText = "You have \(UpdateChecker.currentVersion). Download the new version to update."
+        alert.addButton(withTitle: "Download")
+        alert.addButton(withTitle: "Later")
+        if alert.runModal() == .alertFirstButtonReturn { NSWorkspace.shared.open(url) }
+    }
+
+    private func presentInfoAlert(_ title: String, _ message: String) {
+        panel.hide()
+        NSApp.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = message
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
     }
 
     private func quickPaste() {
