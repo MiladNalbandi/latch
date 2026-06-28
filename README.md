@@ -7,11 +7,12 @@
 **The friendly, private clipboard for macOS.**
 Copy once, paste anywhere — with one keystroke, and nothing ever leaves your Mac.
 
-[![Release](https://img.shields.io/github/v/release/MiladNalbandi/pasta?sort=semver&label=release)](https://github.com/MiladNalbandi/pasta/releases)
-[![Downloads](https://img.shields.io/github/downloads/MiladNalbandi/pasta/total?label=downloads)](https://github.com/MiladNalbandi/pasta/releases)
+[![Release](https://img.shields.io/github/v/release/MiladNalbandi/latch?sort=semver&label=release)](https://github.com/MiladNalbandi/latch/releases)
+[![Downloads](https://img.shields.io/github/downloads/MiladNalbandi/latch/total?label=downloads)](https://github.com/MiladNalbandi/latch/releases)
 ![Platform](https://img.shields.io/badge/macOS-13%2B-blue)
 ![Universal](https://img.shields.io/badge/universal-Apple%20Silicon%20%2B%20Intel-555)
 ![Built with](https://img.shields.io/badge/built%20with-Swift%20%2B%20SwiftUI-orange)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 </div>
 
@@ -46,7 +47,7 @@ Native AppKit + SwiftUI. No Electron. The whole thing is a single, fast menu-bar
 
 ## Install
 
-1. Download the latest **`Latch-<version>.dmg`** from the [**Releases**](https://github.com/MiladNalbandi/pasta/releases) page.
+1. Download the latest **`Latch-<version>.dmg`** from the [**Releases**](https://github.com/MiladNalbandi/latch/releases) page.
 2. Open it and drag **Latch** into **Applications**.
 3. First launch: right-click **Latch.app → Open** (this build is unsigned, so Gatekeeper asks once).
    If macOS says it's "damaged", clear the quarantine flag:
@@ -122,4 +123,4 @@ Keychain), there is no account, and the app makes no network requests.
 
 ## License
 
-Private repository — no license is published yet.
+Latch is open source under the **MIT License** — see [LICENSE](LICENSE).
