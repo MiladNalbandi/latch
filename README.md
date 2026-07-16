@@ -51,6 +51,15 @@ Native AppKit + SwiftUI. No Electron. The whole thing is a single, fast menu-bar
 
 ## Install
 
+**Homebrew:**
+
+```sh
+brew tap miladnalbandi/latch
+brew install --cask latch
+```
+
+**Manual:**
+
 1. Download the latest **`Latch-<version>.dmg`** from the [**Releases**](https://github.com/MiladNalbandi/latch/releases) page.
 2. Open it and drag **Latch** into **Applications**.
 3. First launch: right-click **Latch.app → Open** (this build is unsigned, so Gatekeeper asks once).
