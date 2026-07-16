@@ -16,6 +16,13 @@ Copy once, paste anywhere — with one keystroke, and nothing ever leaves your M
 
 <br>
 
+```sh
+brew tap miladnalbandi/latch https://github.com/MiladNalbandi/latch
+brew install --cask latch
+```
+
+<br>
+
 <img src="design/latch-demo.gif" width="720" alt="Latch — open with ⌘⇧V, search, and paste anywhere">
 
 </div>
@@ -51,14 +58,7 @@ Native AppKit + SwiftUI. No Electron. The whole thing is a single, fast menu-bar
 
 ## Install
 
-**Homebrew:**
-
-```sh
-brew tap miladnalbandi/latch https://github.com/MiladNalbandi/latch
-brew install --cask latch
-```
-
-**Manual:**
+Homebrew instructions are at the top of this README. To install manually instead:
 
 1. Download the latest **`Latch-<version>.dmg`** from the [**Releases**](https://github.com/MiladNalbandi/latch/releases) page.
 2. Open it and drag **Latch** into **Applications**.
