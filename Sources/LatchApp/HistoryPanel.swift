@@ -124,7 +124,10 @@ struct HistoryPanel: View {
                 .padding(6)
             }
             .onChange(of: vm.selectionIndex) { newValue in
-                withAnimation(.easeOut(duration: 0.12)) { proxy.scrollTo(newValue, anchor: .center) }
+                let anchor: UnitPoint =
+                    newValue == 0 ? .top :
+                    newValue == vm.results.count - 1 ? .bottom : .center
+                withAnimation(.easeOut(duration: 0.12)) { proxy.scrollTo(newValue, anchor: anchor) }
             }
         }
     }
