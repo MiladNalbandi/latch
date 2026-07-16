@@ -54,7 +54,7 @@ Native AppKit + SwiftUI. No Electron. The whole thing is a single, fast menu-bar
 **Homebrew:**
 
 ```sh
-brew tap miladnalbandi/latch
+brew tap miladnalbandi/latch https://github.com/MiladNalbandi/latch
 brew install --cask latch
 ```
 
